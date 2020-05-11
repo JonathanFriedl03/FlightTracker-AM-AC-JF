@@ -21,10 +21,12 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Contacts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Contacts.Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(u => u.IdentityUserId == userId).SingleOrDefault();
+            customer.Contacts = _context.Contacts.Where(c => c.UserId == customer.Id).ToList();
+            return View(customer);
         }
 
         // GET: Contacts/Create
@@ -82,12 +84,14 @@ namespace Flight_Tracker.Controllers
             {
                 return NotFound();
             }
-
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            contact.UserId = customer.Id;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(contact);
+                    _context.Contacts.Update(contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
