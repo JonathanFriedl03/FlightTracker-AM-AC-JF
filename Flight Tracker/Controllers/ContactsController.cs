@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using System.Security.Claims;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Flight_Tracker.Controllers
 {
@@ -48,6 +50,18 @@ namespace Flight_Tracker.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
                 contact.UserId = customer.Id;
+                contact.PhoneNumber = StandardizePhoneNumber(contact.PhoneNumber);
+                const string accountSid = "ACee69b1a1fadbf6d8443320d75f3c3094";
+                const string authToken = "630bda7a204c3ab6e65c7bd9c2825114";
+
+                TwilioClient.Init(accountSid, authToken);
+
+                var message = MessageResource.Create(
+                    body: "Join Earth's mightiest heroes. Like Kevin Bacon.",
+                    from: new Twilio.Types.PhoneNumber("+12057402655"),
+                    to: new Twilio.Types.PhoneNumber("+" + contact.PhoneNumber)
+                );
+                Console.WriteLine(message.Sid);
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -145,12 +159,23 @@ namespace Flight_Tracker.Controllers
         {
             return _context.Contacts.Any(e => e.Id == id);
         }
-        public IActionResult ContactList()
+        private string StandardizePhoneNumber(string phoneNumber)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = _context.Customers.Where(u => u.IdentityUserId == userId).SingleOrDefault();
-            customer.Contacts = _context.Contacts.Where(c => c.UserId == customer.Id);
-            return View(customer);
+            var contactNumber = "";
+            phoneNumber.ToCharArray();
+            for(int i = 0; i < phoneNumber.Length; i++)
+            {
+                if (phoneNumber[i] == '-' || phoneNumber[i] == '(' || phoneNumber[i] == ')' || phoneNumber[i] == ' ')
+                {
+                    
+                }
+                else
+                {
+                    contactNumber += phoneNumber[i];
+                }
+            }
+
+            return contactNumber;
         }
     }
 }
