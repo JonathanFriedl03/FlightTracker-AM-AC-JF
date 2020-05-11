@@ -1,5 +1,6 @@
 ﻿using Flight_Tracker.Contracts;
 using Flight_Tracker.Data;
+using Flight_Tracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,11 @@ namespace Flight_Tracker
         }
         public void Update(T entity) 
         { 
-            ApplicationDbContext.Set<T>().Update(entity); 
+            ApplicationDbContext.Set<T>().Update(entity);
         }
-        public void Delete(T entity) 
+        public void Delete(T entity)
         { 
+
             ApplicationDbContext.Set<T>().Remove(entity); 
         }
     }

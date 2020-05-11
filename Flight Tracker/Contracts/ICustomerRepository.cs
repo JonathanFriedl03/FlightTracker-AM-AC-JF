@@ -8,7 +8,8 @@ namespace Flight_Tracker.Contracts
 {
     public interface ICustomerRepository : IRepositoryBase<Customer>
     {
-        Customer GetCustomer(int customerId); 
+        Customer GetCustomer(int? customerId);
+        Customer GetCustomer(string userId);
         void CreateCustomer(Customer customer);
     }
 }

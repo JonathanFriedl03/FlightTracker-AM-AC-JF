@@ -22,11 +22,9 @@ namespace Flight_Tracker.Models
         public string State { get; set; }
         [Display(Name = "Zip Code")]
         public string ZipCode { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-
-
-        
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
+     
         public string Airport { get; set; }
         public string FlightStatus { get; set; }
         public string Gate { get; set; }

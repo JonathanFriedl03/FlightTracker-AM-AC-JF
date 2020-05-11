@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Flight_Tracker.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -165,8 +165,16 @@ namespace Flight_Tracker.Migrations
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
-                    Latitude = table.Column<double>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false),
+                    Latitude = table.Column<double>(nullable: true),
+                    Longitude = table.Column<double>(nullable: true),
+                    Airport = table.Column<string>(nullable: true),
+                    FlightStatus = table.Column<string>(nullable: true),
+                    Gate = table.Column<string>(nullable: true),
+                    Delay = table.Column<int>(nullable: true),
+                    EstimatedDeparture = table.Column<DateTime>(nullable: true),
+                    ActualDeparture = table.Column<DateTime>(nullable: true),
+                    EstimatedArrival = table.Column<DateTime>(nullable: true),
+                    ActualArrival = table.Column<DateTime>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true)
@@ -183,7 +191,7 @@ namespace Flight_Tracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contact",
+                name: "Contacts",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -195,9 +203,9 @@ namespace Flight_Tracker.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contact", x => x.Id);
+                    table.PrimaryKey("PK_Contacts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Contact_Customers_UserId",
+                        name: "FK_Contacts_Customers_UserId",
                         column: x => x.UserId,
                         principalTable: "Customers",
                         principalColumn: "Id",
@@ -207,7 +215,7 @@ namespace Flight_Tracker.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c0af8e50-fbf3-4daf-a342-97f4037de422", "7156b21b-bf0f-4b0d-9294-18cf0055c110", "Customer", "CUSTOMER" });
+                values: new object[] { "f45aaf0f-9ff6-4908-9938-266aaba4a062", "6fcb1064-2b82-46ae-b4ac-3566a24b64f8", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -249,8 +257,8 @@ namespace Flight_Tracker.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contact_UserId",
-                table: "Contact",
+                name: "IX_Contacts_UserId",
+                table: "Contacts",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -277,7 +285,7 @@ namespace Flight_Tracker.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Contact");
+                name: "Contacts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
