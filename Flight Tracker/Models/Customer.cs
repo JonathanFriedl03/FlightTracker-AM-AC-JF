@@ -14,6 +14,7 @@ namespace Flight_Tracker.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
         public string FlightNumber { get; set; }
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
@@ -23,6 +24,17 @@ namespace Flight_Tracker.Models
         public string ZipCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+
+
+        
+        public string Airport { get; set; }
+        public string FlightStatus { get; set; }
+        public string Gate { get; set; }
+        public int? Delay { get; set; }
+        public DateTime? EstimatedDeparture { get; set; }
+        public DateTime? ActualDeparture { get; set; }
+        public DateTime? EstimatedArrival { get; set; }
+        public DateTime? ActualArrival { get; set; }
 
         public List<Contact> Contacts { get; set; }
         public string UserName { get; internal set; }
