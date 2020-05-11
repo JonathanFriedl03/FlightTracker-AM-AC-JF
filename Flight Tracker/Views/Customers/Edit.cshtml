@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Edit</h1>
@@ -23,6 +22,51 @@
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Airport" class="control-label"></label>
+                <input asp-for="Airport" class="form-control" />
+                <span asp-validation-for="Airport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightStatus" class="control-label"></label>
+                <input asp-for="FlightStatus" class="form-control" />
+                <span asp-validation-for="FlightStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gate" class="control-label"></label>
+                <input asp-for="Gate" class="form-control" />
+                <span asp-validation-for="Gate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Delay" class="control-label"></label>
+                <input asp-for="Delay" class="form-control" />
+                <span asp-validation-for="Delay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedDeparture" class="control-label"></label>
+                <input asp-for="EstimatedDeparture" class="form-control" />
+                <span asp-validation-for="EstimatedDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualDeparture" class="control-label"></label>
+                <input asp-for="ActualDeparture" class="form-control" />
+                <span asp-validation-for="ActualDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedArrival" class="control-label"></label>
+                <input asp-for="EstimatedArrival" class="form-control" />
+                <span asp-validation-for="EstimatedArrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualArrival" class="control-label"></label>
+                <input asp-for="ActualArrival" class="form-control" />
+                <span asp-validation-for="ActualArrival" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
