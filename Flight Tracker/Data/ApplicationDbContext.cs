@@ -14,28 +14,17 @@ namespace Flight_Tracker.Data
             : base(options)
         {
         }
-        public DbSet<Customer> Customers { get; set; }
        // public DbSet<FlightTracker> Flights { get; set; } NOT SURE IF WE GONNA USE THIS YET
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<IdentityRole>().HasData(new IdentityRole
             {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
             }
-            //new IdentityRole
-            //{
-            //    Name = "Customer",
-            //    NormalizedName = "CUSTOMER"
-            //},
-            //new IdentityRole
-            //{
-            //    Name = "Employee",
-            //    NormalizedName = "EMPLOYEE"
-            //}
             );
         }
-        public DbSet<Flight_Tracker.Models.Customer> Customer { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }

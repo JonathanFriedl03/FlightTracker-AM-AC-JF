@@ -15,7 +15,7 @@ namespace Flight_Tracker.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
-        public string FlightNumber { get; }
+        public string FlightNumber { get; set; }
         public string Airport { get; set; }
         public string FlightStatus { get; set; }
         public string Gate { get; set; }
