@@ -11,68 +11,50 @@ using System.Security.Claims;
 
 namespace Flight_Tracker.Controllers
 {
-    public class CustomersController : Controller
+    public class ContactsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomersController(ApplicationDbContext context)
+        public ContactsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Customers
+        // GET: Contacts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.IdentityUser);
+            var applicationDbContext = _context.Contacts.Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
-        }
-
-        // GET: Customers/Create
+        // GET: Contacts/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id");
             return View();
         }
 
-        // POST: Customers/Create
+        // POST: Contacts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Address,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,PhoneNumber,UserId")] Contact contact)
         {
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                customer.IdentityUserId = userId;
-                _context.Add(customer);
+                var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+                contact.UserId = customer.Id;
+                _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id", contact.UserId);
+            return View(contact);
         }
 
-        // GET: Customers/Edit/5
+        // GET: Contacts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,23 +62,23 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer == null)
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id", contact.UserId);
+            return View(contact);
         }
 
-        // POST: Customers/Edit/5
+        // POST: Contacts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Address,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,PhoneNumber,UserId")] Contact contact)
         {
-            if (id != customer.Id)
+            if (id != contact.Id)
             {
                 return NotFound();
             }
@@ -105,12 +87,12 @@ namespace Flight_Tracker.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    _context.Update(contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    if (!ContactExists(contact.Id))
                     {
                         return NotFound();
                     }
@@ -121,11 +103,11 @@ namespace Flight_Tracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id", contact.UserId);
+            return View(contact);
         }
 
-        // GET: Customers/Delete/5
+        // GET: Contacts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,32 +115,38 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
+            var contact = await _context.Contacts
+                .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (customer == null)
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(contact);
         }
 
-        // POST: Customers/Delete/5
+        // POST: Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
+            var contact = await _context.Contacts.FindAsync(id);
+            _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
+        private bool ContactExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            return _context.Contacts.Any(e => e.Id == id);
         }
-
+        public IActionResult ContactList()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(u => u.IdentityUserId == userId).SingleOrDefault();
+            customer.Contacts = _context.Contacts.Where(c => c.UserId == customer.Id);
+            return View(customer);
+        }
     }
 }

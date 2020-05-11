@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Models;
+using static Flight_Tracker.Models.FlightInfo;
 
 namespace Flight_Tracker.Data
 {
@@ -15,27 +16,18 @@ namespace Flight_Tracker.Data
         {
         }
         public DbSet<Customer> Customers { get; set; }
-       // public DbSet<FlightTracker> Flights { get; set; } NOT SURE IF WE GONNA USE THIS YET
+        public DbSet<Contact> Contacts { get; set; }
+        //public DbSet<Flight> Flights { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<IdentityRole>().HasData(new IdentityRole
+            builder.Entity<IdentityRole>().HasData(
+            new IdentityRole
             {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
             }
-            //new IdentityRole
-            //{
-            //    Name = "Customer",
-            //    NormalizedName = "CUSTOMER"
-            //},
-            //new IdentityRole
-            //{
-            //    Name = "Employee",
-            //    NormalizedName = "EMPLOYEE"
-            //}
             );
         }
-        public DbSet<Flight_Tracker.Models.Customer> Customer { get; set; }
     }
 }
