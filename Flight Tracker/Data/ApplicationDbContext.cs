@@ -27,6 +27,7 @@ namespace Flight_Tracker.Data
                 Name = "Customer",
                 NormalizedName = "CUSTOMER"
             }
+
             );
         }
     }
