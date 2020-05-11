@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Contracts
 {
-    interface IRepositoryWrapper
+    public interface IRepositoryWrapper
     {
+        ICustomerRepository Customer { get; }
+        void Save();
     }
 }

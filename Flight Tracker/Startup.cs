@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using TrashCollector2.ActionFilters;
+using Flight_Tracker.Contracts;
 
 namespace Flight_Tracker
 {
@@ -40,6 +41,7 @@ namespace Flight_Tracker
             {
                 config.Filters.Add(typeof(GlobalRouting));
             });
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
         }
