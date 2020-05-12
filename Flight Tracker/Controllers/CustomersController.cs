@@ -15,23 +15,18 @@ namespace Flight_Tracker.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private ICustomerRepository _customerRepo;
+        private IRepositoryWrapper _repo;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, IRepositoryWrapper repo)
         {
             _context = context;
+            _repo = repo;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int id = 1;
-            var customer = _customerRepo.GetCustomer(id);
-            if(customer == null)
-            {
-                return RedirectToAction("Create");
-            }
+            var customer = _repo.Customer.FindAll();
             return View(customer);
         }
 
