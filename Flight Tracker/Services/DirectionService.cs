@@ -13,17 +13,12 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Services
 {
-    public class DirectionService 
+    public class DirectionService
     {
         public DirectionService()
         {
 
         }
-
-        //public string GetDirectionsURL(Customer customer)
-        //{
-
-        //}
 
         public async Task<Customer> GetDirections(Customer customer)
         {
@@ -39,7 +34,6 @@ namespace Flight_Tracker.Services
                 {
                     string data = await response.Content.ReadAsStringAsync();
                     JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
-<<<<<<< HEAD
                     JToken results = jsonResults["routes"][0];
                     JToken location = results["legs"]["duration"]["start_location"]["end_location"];
 
@@ -47,9 +41,6 @@ namespace Flight_Tracker.Services
                     customer.Longitude = (double)location["lng"];
                    // customer.Latitude = (double)location[];
                     
-=======
-                    // JToken results = jsonResults[];
->>>>>>> 5b9e289a72f437184d2de6582f6950d8ec8c9804
                 }
                 return customer;
             }

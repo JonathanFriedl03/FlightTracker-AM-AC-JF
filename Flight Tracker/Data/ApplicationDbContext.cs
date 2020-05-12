@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Models;
-using static Flight_Tracker.Models.FlightInfo;
 
 namespace Flight_Tracker.Data
 {
