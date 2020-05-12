@@ -24,10 +24,15 @@ namespace Flight_Tracker.Controllers
         public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
         {
             _tsaWaitTimesService = tsaWaitTimesService;
+            _context = context;
+        }
+
+        private readonly DirectionService _directions;
 
         private IRepositoryWrapper _repo;
-        public DirectionService _directions;
+
         public FlightService _flightService;
+
 
         public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
         {
@@ -41,14 +46,22 @@ namespace Flight_Tracker.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
+           
+            
+            
+            
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+           
             if (customer.Count == 0)
             {
+
                 return RedirectToAction("Create");
             }
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
             return View(customer);
+
         }
 
         // GET: Customers/Details/5
@@ -70,8 +83,9 @@ namespace Flight_Tracker.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            Customer customer = new Customer();
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(customer);
         }
 
         // POST: Customers/Create
@@ -79,7 +93,7 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +102,7 @@ namespace Flight_Tracker.Controllers
                 
                 _context.Add(customer);
 
-                _repo.Customer.CreateCustomer(customer);
+                _repo.Customer.CreateCustomer(customer);            
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
