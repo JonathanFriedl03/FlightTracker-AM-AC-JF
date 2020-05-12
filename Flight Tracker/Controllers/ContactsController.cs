@@ -51,17 +51,7 @@ namespace Flight_Tracker.Controllers
                 var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
                 contact.UserId = customer.Id;
                 contact.PhoneNumber = StandardizePhoneNumber(contact.PhoneNumber);
-                const string accountSid = "ACee69b1a1fadbf6d8443320d75f3c3094";
-                const string authToken = "630bda7a204c3ab6e65c7bd9c2825114";
 
-                TwilioClient.Init(accountSid, authToken);
-
-                var message = MessageResource.Create(
-                    body: "Join Earth's mightiest heroes. Like Kevin Bacon.",
-                    from: new Twilio.Types.PhoneNumber("+12057402655"),
-                    to: new Twilio.Types.PhoneNumber("+" + contact.PhoneNumber)
-                );
-                Console.WriteLine(message.Sid);
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -101,10 +91,12 @@ namespace Flight_Tracker.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             contact.UserId = customer.Id;
+            contact.PhoneNumber = StandardizePhoneNumber(contact.PhoneNumber);
             if (ModelState.IsValid)
             {
                 try
                 {
+                    
                     _context.Contacts.Update(contact);
                     await _context.SaveChangesAsync();
                 }
@@ -121,6 +113,7 @@ namespace Flight_Tracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id", contact.UserId);
             return View(contact);
         }
@@ -161,7 +154,7 @@ namespace Flight_Tracker.Controllers
         }
         private string StandardizePhoneNumber(string phoneNumber)
         {
-            var contactNumber = "";
+            var contactNumber = "+";
             phoneNumber.ToCharArray();
             for(int i = 0; i < phoneNumber.Length; i++)
             {
