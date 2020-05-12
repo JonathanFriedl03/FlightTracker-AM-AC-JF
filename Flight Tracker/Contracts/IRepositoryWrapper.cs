@@ -1,13 +1,13 @@
-﻿using Flight_Tracker.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Flight_Tracker.Contracts
 {
-    public interface IDirectionsRequest
+    public interface IRepositoryWrapper
     {
-        Task<Customer> GetDirections();
+        ICustomerRepository Customer { get; }
+        void Save();
     }
 }

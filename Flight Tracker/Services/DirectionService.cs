@@ -1,9 +1,14 @@
 ﻿using Flight_Tracker.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient.Memcached;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Flight_Tracker.Services
@@ -15,22 +20,28 @@ namespace Flight_Tracker.Services
 
         }
 
-        public string GetDirectionsURL(Customer customer)
-        {
-            return $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&destination=Chicago&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
-        }
+        //public string GetDirectionsURL(Customer customer)
+        //{
+            
+        //}
 
-        public async Task<Customer> GetDirections(Customer customer);
+        public async Task<Customer> GetDirections(Customer customer)
         {
-            string apiurl = GetDirectionsURL(customer);
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&destination=Chicago&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
             using (HttpClient client = new HttpClient())
             {
-                Client.BaseAddress = new Uri(apiurl);
+                client.BaseAddress = new Uri(url);
                 client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue);
-                HttpRequestMessage response = await client.GetAsync(apiurl);
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = await client.GetAsync(url);
 
-    HttpresponseMessage respones
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
+                   // JToken results = jsonResults[];
+                }
+                return customer;
             }
         }
     }

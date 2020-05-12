@@ -351,5 +351,12 @@ MigrationBackup/
 
 
 APIKeys.cs
+<<<<<<< HEAD
 /Flight Tracker/Migrations
+=======
+Flight_Tracker/Migrations
+
+#Migration Folder
+/Data/Migrations
+>>>>>>> a74cf604aa3906e25554a7c9bc08b5f1ea85f6e9
 

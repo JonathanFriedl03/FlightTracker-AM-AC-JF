@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200511132417_initial")]
-    partial class initial
+    [Migration("20200511200427_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,7 @@ namespace Flight_Tracker.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Contact");
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("Flight_Tracker.Models.Customer", b =>
@@ -54,16 +54,40 @@ namespace Flight_Tracker.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("ActualArrival")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ActualDeparture")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Airport")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Delay")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EstimatedArrival")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("EstimatedDeparture")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FlightNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlightStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityUserId")
@@ -72,10 +96,10 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Latitude")
+                    b.Property<double?>("Latitude")
                         .HasColumnType("float");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("float");
 
                     b.Property<string>("State")
@@ -126,8 +150,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c0af8e50-fbf3-4daf-a342-97f4037de422",
-                            ConcurrencyStamp = "7156b21b-bf0f-4b0d-9294-18cf0055c110",
+                            Id = "f45aaf0f-9ff6-4908-9938-266aaba4a062",
+                            ConcurrencyStamp = "6fcb1064-2b82-46ae-b4ac-3566a24b64f8",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
