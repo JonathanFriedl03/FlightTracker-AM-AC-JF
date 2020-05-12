@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using Microsoft.AspNetCore.Authorization;
+using Flight_Tracker.Services;
 
 namespace Flight_Tracker.Controllers
 {
@@ -15,9 +16,11 @@ namespace Flight_Tracker.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public DirectionService _directions;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, DirectionService directions)
         {
+            _directions = directions;
             _context = context;
         }
 
