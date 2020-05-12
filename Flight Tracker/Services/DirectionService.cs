@@ -39,7 +39,13 @@ namespace Flight_Tracker.Services
                 {
                     string data = await response.Content.ReadAsStringAsync();
                     JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
-                   // JToken results = jsonResults[];
+                    JToken results = jsonResults["routes"][0];
+                    JToken location = results["legs"]["duration"]["start_location"]["end_location"];
+
+                    customer.Latitude = (double)location["lat"];
+                    customer.Longitude = (double)location["lng"];
+                   // customer.Latitude = (double)location[];
+                    
                 }
                 return customer;
             }

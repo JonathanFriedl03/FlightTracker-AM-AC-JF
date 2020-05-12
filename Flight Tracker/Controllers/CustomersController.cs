@@ -21,7 +21,7 @@ namespace Flight_Tracker.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public DirectionService _directions;
+        private readonly DirectionService _directions;
 
         
 
@@ -35,7 +35,8 @@ namespace Flight_Tracker.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+           
+            
             
             return View();
         }
@@ -62,8 +63,9 @@ namespace Flight_Tracker.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            Customer customer = new Customer();
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(customer);
         }
 
         // POST: Customers/Create
@@ -71,11 +73,17 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                customer.IdentityUserId = userId;
+
+                //make directions api call
+                var customersLatLng = await _directions.GetDirections(customer);
+
+                _context.Add(customersLatLng);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
