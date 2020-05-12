@@ -25,24 +25,24 @@ namespace Flight_Tracker.Services
 
         //}
 
-        public async Task<Customer> GetDirections(Customer customer)
-        {
-            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&destination=Chicago&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(url);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.GetAsync(url);
+        //public async Task<Customer> GetDirections(Customer customer)
+        //{
+        //    string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&destination=Chicago&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
+        //    using (HttpClient client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(url);
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        //        HttpResponseMessage response = await client.GetAsync(url);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    string data = await response.Content.ReadAsStringAsync();
-                    JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
-                    // JToken results = jsonResults[];
-                }
-                return customer;
-            }
-        }
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            string data = await response.Content.ReadAsStringAsync();
+        //            JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
+        //            // JToken results = jsonResults[];
+        //        }
+        //        return customer;
+        //    }
+        //}
     }
 }

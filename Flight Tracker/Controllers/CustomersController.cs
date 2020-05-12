@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Data;
 using Flight_Tracker.Models;
-
 using Microsoft.AspNetCore.Authorization;
 using Flight_Tracker.Services;
-
 using Flight_Tracker.Contracts;
 using System.Security.Claims;
-
 
 namespace Flight_Tracker.Controllers
 {
@@ -22,12 +19,14 @@ namespace Flight_Tracker.Controllers
         private readonly ApplicationDbContext _context;
         private IRepositoryWrapper _repo;
         public DirectionService _directions;
+        public FlightService _flightService;
 
-        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo)
+        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
         {
             _directions = directions;
             _context = context;
             _repo = repo;
+            _flightService = flightService;
         }
 
         // GET: Customers
@@ -35,7 +34,8 @@ namespace Flight_Tracker.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
-            if(customer.Count == 0)
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            if (customer.Count == 0)
             {
                 return RedirectToAction("Create");
             }
