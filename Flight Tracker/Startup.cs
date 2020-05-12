@@ -35,7 +35,6 @@ namespace Flight_Tracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -46,9 +45,9 @@ namespace Flight_Tracker
             {
                 config.Filters.Add(typeof(GlobalRouting));
             });
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<DirectionService>();
         }
 

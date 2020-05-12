@@ -14,21 +14,18 @@ namespace Flight_Tracker.Data
         public CustomerRepository(ApplicationDbContext applicationDbContext)
             : base(applicationDbContext)
         {
-
         }
         public Customer GetCustomer(int? customerId) =>
             FindByCondition(c => c.Id.Equals(customerId)).SingleOrDefault();
-        public Customer GetCustomer(string userId) =>
-           FindByCondition(c => c.IdentityUserId.Equals(userId)).SingleOrDefault();
-        public void CreateCustomer(Customer customer) => Create(customer);
-        public void EditCustomer([Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public List<Customer> GetCustomer(string userId)
         {
-            var customerToUpdate = FindByCondition(c => c.Id.Equals(customer.Id)).SingleOrDefault();
-            if (customerToUpdate != null)
-            {
-                customerToUpdate = customer;
-                Update(customer);
-            }
+            var customer = FindByCondition(c => c.IdentityUserId.Equals(userId)).ToList();
+            return customer;
+        }
+        public void CreateCustomer(Customer customer) => Create(customer);
+        public void EditCustomer(Customer customer)
+        {
+            Update(customer);
         }
         public void DeleteCustomer(int customerId)
         {
