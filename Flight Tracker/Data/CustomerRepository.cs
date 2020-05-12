@@ -17,8 +17,8 @@ namespace Flight_Tracker.Data
         }
         public Customer GetCustomer(int customerId) =>
             FindByCondition(c => c.Id.Equals(customerId)).SingleOrDefault();
-        //public Customer GetCustomer(string userId) =>
-           //FindByCondition(c => c.IdentityUserId.Equals(userId)).SingleOrDefault();
+        public Customer GetCustomer(string userId) =>
+           FindByCondition(c => c.IdentityUserId.Equals(userId)).SingleOrDefault();
         public void CreateCustomer(Customer customer) => Create(customer);
         public void EditCustomer(Customer customer)
         {
