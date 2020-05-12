@@ -44,11 +44,13 @@ namespace Flight_Tracker.Controllers
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+           
             if (customer.Count == 0)
             {
+
                 return RedirectToAction("Create");
             }
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
             return View(customer);
 
         }
@@ -92,9 +94,9 @@ namespace Flight_Tracker.Controllers
                 //make directions api call
                 var customersLatLng = await _directions.GetDirections(customer);
 
-                _context.Add(customersLatLng);
+              
 
-                _repo.Customer.CreateCustomer(customer);
+                _repo.Customer.CreateCustomer(customersLatLng);
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
