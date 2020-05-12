@@ -1,4 +1,4 @@
-﻿@model Flight_Tracker.Models.Airport
+﻿@model IEnumerable<Flight_Tracker.Models.Customer>
 
 @{
     ViewData["Title"] = "Home";
@@ -14,21 +14,62 @@
     <thead>
         <tr>
             <th>
-                Airport
+                @Html.DisplayNameFor(model => model.FlightNumber)
             </th>
             <th>
-                TSA Wait Time
+                @Html.DisplayNameFor(model => model.StreetAddress)
             </th>
             <th>
-                TSA Precheck Wait Time
+                @Html.DisplayNameFor(model => model.City)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Airport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlightStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Delay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedDeparture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualDeparture)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentityUser)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>@Model.code</td>
-            <td>@Model.rightnow</td>
-            <td>@Model.precheck</td>
-        </tr>
     </tbody>
 </table>

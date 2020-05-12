@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Models
 {
-    public class FlightInfo
-    {
-        public class Rootobject
+        public class DataInfo
         {
             public Pagination pagination { get; set; }
             public Datum[] data { get; set; }
@@ -44,7 +42,7 @@ namespace Flight_Tracker.Models
             public object delay { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime estimated { get; set; }
-            public object actual { get; set; }
+            public DateTime? actual { get; set; }
             public object estimated_runway { get; set; }
             public object actual_runway { get; set; }
         }
@@ -61,7 +59,7 @@ namespace Flight_Tracker.Models
             public int? delay { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime estimated { get; set; }
-            public object actual { get; set; }
+            public DateTime? actual { get; set; }
             public object estimated_runway { get; set; }
             public object actual_runway { get; set; }
         }
@@ -79,6 +77,5 @@ namespace Flight_Tracker.Models
             public string iata { get; set; }
             public string icao { get; set; }
             public object codeshared { get; set; }
-        }
-    }
+        } 
 }

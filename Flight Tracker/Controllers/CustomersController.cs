@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,28 +7,48 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Data;
 using Flight_Tracker.Models;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Flight_Tracker.Services;
 
+using Flight_Tracker.Contracts;
+using System.Security.Claims;
+
+
 namespace Flight_Tracker.Controllers
 {
-    //[Authorize(Roles = "Customer")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         private readonly ITSAWaitTimesService _tsaWaitTimesService;
         public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
         {
             _tsaWaitTimesService = tsaWaitTimesService;
+
+        private IRepositoryWrapper _repo;
+        public DirectionService _directions;
+        public FlightService _flightService;
+
+        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
+        {
+            _directions = directions;
+
             _context = context;
+            _repo = repo;
+            _flightService = flightService;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            Airport airport = await _tsaWaitTimesService.GetWaitTimes("MKE");
-            return View(airport);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _repo.Customer.GetCustomer(userId);
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            if (customer.Count == 0)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(customer);
         }
 
         // GET: Customers/Details/5
@@ -39,14 +59,11 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
             }
-
             return View(customer);
         }
 
@@ -62,7 +79,7 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +87,9 @@ namespace Flight_Tracker.Controllers
                 customer.IdentityUserId = userId;
                 
                 _context.Add(customer);
+
+                _repo.Customer.CreateCustomer(customer);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +105,7 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -99,7 +119,7 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -110,7 +130,9 @@ namespace Flight_Tracker.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.IdentityUserId = userId;
+                    _repo.Customer.EditCustomer(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,9 +160,7 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -154,16 +174,22 @@ namespace Flight_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
+            _repo.Customer.DeleteCustomer(id);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
+            if(customer != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-
     }
 }

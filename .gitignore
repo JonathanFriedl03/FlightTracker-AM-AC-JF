@@ -349,6 +349,17 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+
 APIKey.cs
+/Flight Tracker/Migrations
+
+
+APIKeys.cs
+
+/Flight Tracker/Migrations
+
 Flight_Tracker/Migrations
+
+#Migration Folder
+
 

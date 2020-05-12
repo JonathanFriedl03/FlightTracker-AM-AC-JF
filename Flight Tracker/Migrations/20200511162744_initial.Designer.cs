@@ -10,8 +10,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+
     [Migration("20200511162744_initial")]
-    partial class initial
+    partial class initial { }
+
+    [Migration("20200511200427_Initial")]
+    partial class Initial
+
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,10 +101,10 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Latitude")
+                    b.Property<double?>("Latitude")
                         .HasColumnType("float");
 
-                    b.Property<double>("Longitude")
+                    b.Property<double?>("Longitude")
                         .HasColumnType("float");
 
                     b.Property<string>("State")
@@ -152,6 +157,7 @@ namespace Flight_Tracker.Migrations
                         {
                             Id = "812bd350-0ddd-4ff2-8f86-cb024ff1fdfc",
                             ConcurrencyStamp = "460e075c-de21-4d00-856b-7a4ba372d4be",
+
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
