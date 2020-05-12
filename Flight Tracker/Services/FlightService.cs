@@ -23,7 +23,7 @@ namespace Flight_Tracker.Services
             {
                 string json = response.Content.ReadAsStringAsync().Result;
                 //JObject jObject = JObject.Parse(json);
-                //DateTime flightDate = (DateTime)jObject[]
+                //DateTime flightDate = (DateTime)jObject["flight_date"];
                 return JsonConvert.DeserializeObject<DataInfo>(json);
             }
             return null;

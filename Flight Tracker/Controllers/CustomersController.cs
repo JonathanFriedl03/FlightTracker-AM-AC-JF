@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Flight_Tracker.Services;
 using Flight_Tracker.Contracts;
 using System.Security.Claims;
+using System.Globalization;
 
 namespace Flight_Tracker.Controllers
 {
@@ -33,13 +34,28 @@ namespace Flight_Tracker.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = _repo.Customer.GetCustomer(userId);
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            var customer = _repo.Customer.GetCustomer(userId);           
             if (customer.Count == 0)
             {
                 return RedirectToAction("Create");
             }
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            SetFlightInfo(info, customer[0]);
             return View(customer);
+        }
+        public async Task SetFlightInfo(DataInfo info, Customer customer)
+        {
+            string flightDate = customer.FlightDate.ToString("yyyy-MM-dd");
+            for(int i = 0; i < info.data.Length; i++)
+            {
+                if (info.data[i].flight_date == flightDate) 
+                {
+                    customer.EstimatedDeparture = info.data[i].departure.estimated;
+                    customer.Airport = info.data[i].departure.airport;
+                    _repo.Customer.EditCustomer(customer);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
 
         // GET: Customers/Details/5
@@ -70,7 +86,7 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightDate,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
         {
             if (ModelState.IsValid)
             {

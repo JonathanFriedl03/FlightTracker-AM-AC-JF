@@ -14,6 +14,7 @@ namespace Flight_Tracker.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public DateTime FlightDate { get; set; }
 
         public string FlightNumber { get; set; }
         [Display(Name = "Street Address")]

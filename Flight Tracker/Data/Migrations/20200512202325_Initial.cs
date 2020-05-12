@@ -160,6 +160,7 @@ namespace Flight_Tracker.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
+                    FlightDate = table.Column<DateTime>(nullable: true),
                     FlightNumber = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
@@ -215,7 +216,7 @@ namespace Flight_Tracker.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f45aaf0f-9ff6-4908-9938-266aaba4a062", "6fcb1064-2b82-46ae-b4ac-3566a24b64f8", "Customer", "CUSTOMER" });
+                values: new object[] { "e9a8b6f2-82fb-4a40-a4c5-bfc6ee6b41f9", "d626ca17-f73e-4841-b8a8-e183d15609f9", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

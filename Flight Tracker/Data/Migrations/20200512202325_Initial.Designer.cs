@@ -4,14 +4,16 @@ using Flight_Tracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200512202325_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,6 +80,9 @@ namespace Flight_Tracker.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FlightDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FlightNumber")
                         .HasColumnType("nvarchar(max)");
@@ -148,8 +153,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f45aaf0f-9ff6-4908-9938-266aaba4a062",
-                            ConcurrencyStamp = "6fcb1064-2b82-46ae-b4ac-3566a24b64f8",
+                            Id = "e9a8b6f2-82fb-4a40-a4c5-bfc6ee6b41f9",
+                            ConcurrencyStamp = "d626ca17-f73e-4841-b8a8-e183d15609f9",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
