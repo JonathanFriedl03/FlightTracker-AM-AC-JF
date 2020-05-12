@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Services
 {
-    public class TSAWaitTimesService
+    public class TSAWaitTimesService : ITSAWaitTimesService
     {
-        public TSAWaitTimesService()
-        {
-
-        }
         public async Task<Airport> GetWaitTimes(string airportCode)
         {
             HttpClient client = new HttpClient();

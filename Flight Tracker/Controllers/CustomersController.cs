@@ -9,7 +9,7 @@ using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-
+using Flight_Tracker.Services;
 
 namespace Flight_Tracker.Controllers
 {
@@ -17,17 +17,18 @@ namespace Flight_Tracker.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CustomersController(ApplicationDbContext context)
+        private readonly ITSAWaitTimesService _tsaWaitTimesService;
+        public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
         {
+            _tsaWaitTimesService = tsaWaitTimesService;
             _context = context;
         }
 
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customers.Include(c => c.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            Airport airport = await _tsaWaitTimesService.GetWaitTimes("MKE");
+            return View(airport);
         }
 
         // GET: Customers/Details/5

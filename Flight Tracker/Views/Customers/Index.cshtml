@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Flight_Tracker.Models.Customer>
+﻿@model Flight_Tracker.Models.Airport
 
 @{
     ViewData["Title"] = "Home";
@@ -11,4 +11,24 @@
 </p>
 <table class="table">
     
+    <thead>
+        <tr>
+            <th>
+                Airport
+            </th>
+            <th>
+                TSA Wait Time
+            </th>
+            <th>
+                TSA Precheck Wait Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.code</td>
+            <td>@Model.rightnow</td>
+            <td>@Model.precheck</td>
+        </tr>
+    </tbody>
 </table>
