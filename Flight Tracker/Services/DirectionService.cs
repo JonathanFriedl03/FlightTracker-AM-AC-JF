@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Services
 {
-    public class DirectionService
+    public class DirectionService 
     {
         public DirectionService()
         {
