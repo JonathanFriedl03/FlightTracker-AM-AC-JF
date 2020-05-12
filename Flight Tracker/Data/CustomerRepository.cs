@@ -15,19 +15,17 @@ namespace Flight_Tracker.Data
             : base(applicationDbContext)
         {
         }
-        public Customer GetCustomer(int customerId) =>
+        public Customer GetCustomer(int? customerId) =>
             FindByCondition(c => c.Id.Equals(customerId)).SingleOrDefault();
-        public Customer GetCustomer(string userId) =>
-           FindByCondition(c => c.IdentityUserId.Equals(userId)).SingleOrDefault();
+        public List<Customer> GetCustomer(string userId)
+        {
+            var customer = FindByCondition(c => c.IdentityUserId.Equals(userId)).ToList();
+            return customer;
+        }
         public void CreateCustomer(Customer customer) => Create(customer);
         public void EditCustomer(Customer customer)
         {
-            var customerToUpdate = FindByCondition(c => c.Id.Equals(customer.Id)).SingleOrDefault();
-            if (customerToUpdate != null)
-            {
-                customerToUpdate = customer;
-                Update(customer);
-            }
+            Update(customer);
         }
         public void DeleteCustomer(int customerId)
         {

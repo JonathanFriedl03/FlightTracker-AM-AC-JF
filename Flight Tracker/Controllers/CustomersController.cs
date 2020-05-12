@@ -33,7 +33,12 @@ namespace Flight_Tracker.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var customer = _repo.Customer.FindAll();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _repo.Customer.GetCustomer(userId);
+            if(customer.Count == 0)
+            {
+                return RedirectToAction("Create");
+            }
             return View(customer);
         }
 
@@ -45,14 +50,11 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
             }
-
             return View(customer);
         }
 
@@ -72,7 +74,9 @@ namespace Flight_Tracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                customer.IdentityUserId = userId;
+                _repo.Customer.CreateCustomer(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -88,7 +92,7 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -113,7 +117,9 @@ namespace Flight_Tracker.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.IdentityUserId = userId;
+                    _repo.Customer.EditCustomer(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,9 +147,7 @@ namespace Flight_Tracker.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .Include(c => c.IdentityUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
                 return NotFound();
@@ -157,15 +161,22 @@ namespace Flight_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
+            _repo.Customer.DeleteCustomer(id);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customers.Any(e => e.Id == id);
+            var customer = _repo.Customer.GetCustomer(id);
+            if(customer != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

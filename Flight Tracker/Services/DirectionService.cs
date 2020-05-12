@@ -22,7 +22,7 @@ namespace Flight_Tracker.Services
 
         //public string GetDirectionsURL(Customer customer)
         //{
-            
+
         //}
 
         public async Task<Customer> GetDirections(Customer customer)
@@ -39,7 +39,7 @@ namespace Flight_Tracker.Services
                 {
                     string data = await response.Content.ReadAsStringAsync();
                     JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
-                   // JToken results = jsonResults[];
+                    // JToken results = jsonResults[];
                 }
                 return customer;
             }
