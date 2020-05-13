@@ -19,25 +19,20 @@ namespace Flight_Tracker.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         private readonly ITSAWaitTimesService _tsaWaitTimesService;
-        public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
-        {
-            _tsaWaitTimesService = tsaWaitTimesService;
-            _context = context;
-        }
-
         private readonly DirectionService _directions;
-
         private IRepositoryWrapper _repo;
-
         public FlightService _flightService;
         
 
-        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
+        public CustomersController(ApplicationDbContext context,
+            DirectionService directions,
+            IRepositoryWrapper repo,
+            FlightService flightService,
+            ITSAWaitTimesService tsaWaitTimesService)
         {
             _directions = directions;
-
+            _tsaWaitTimesService = tsaWaitTimesService;
             _context = context;
             _repo = repo;
             _flightService = flightService;
@@ -121,7 +116,7 @@ namespace Flight_Tracker.Controllers
             return View(customer);
         }
         
-            public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
+        public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
         {
 
             customer.duration = travelInfo.routes[0].legs[0].duration.value;
