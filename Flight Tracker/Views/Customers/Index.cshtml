@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home";
 }
 
+
 <br/>
 
 <div class="border backgroundWhite">
@@ -16,8 +17,35 @@
     </div>
     <br />
     <div>
-
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <h5>
+                    <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
+                </h5>
+                <h5>
+                    <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
+                </h5>
+                <button type="submit" value="Submit" class="btn-primary">Submit</button>
+            </div>
+        </form>
+        <div>
+            @if (ViewBag.Check != null)
+            {
+                <div>
+                    <h5>@Html.DropDownList("Flights")</h5>
+                </div>
+                <button type="submit" value="Submit" class="btn-primary">Submit</button>
+            }
+            else
+            {
+                <div style="display: none;">
+                    <h5>@Html.DropDownList("Flights")</h5>
+                </div>
+                <button style="display: none;" type="submit" value="Submit" class="btn-primary">Submit</button>
+            }
+        </div>
     </div>
+
     <div>
 
         <table id="tblData" class="table table-striped border">
@@ -77,6 +105,7 @@
                     </td>
                 </tr>
 
+
             </tbody>
         </table>
 
@@ -91,3 +120,4 @@
             }*@
     </div>
 </div>
+

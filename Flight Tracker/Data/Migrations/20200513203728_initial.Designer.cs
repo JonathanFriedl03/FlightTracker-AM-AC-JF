@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200513134403_data")]
-    partial class data
+    [Migration("20200513203728_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,6 +81,9 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FlightDate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FlightNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -108,11 +111,11 @@ namespace Flight_Tracker.Migrations
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
 
-                    b.Property<double?>("distance")
-                        .HasColumnType("float");
+                    b.Property<int?>("distance")
+                        .HasColumnType("int");
 
-                    b.Property<double?>("duration")
-                        .HasColumnType("float");
+                    b.Property<int?>("duration")
+                        .HasColumnType("int");
 
                     b.Property<double?>("endLatitude")
                         .HasColumnType("float");
@@ -162,8 +165,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "272f8f43-9ba0-44ec-938f-6298edfb3a08",
-                            ConcurrencyStamp = "f68fb2e0-f1cc-45e2-bcd2-7d79be64de05",
+                            Id = "f2eefb79-a8cb-457c-b8c2-2b05bba3ab20",
+                            ConcurrencyStamp = "a3aa018e-ea4f-4410-b4cd-9ef55f27c08d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

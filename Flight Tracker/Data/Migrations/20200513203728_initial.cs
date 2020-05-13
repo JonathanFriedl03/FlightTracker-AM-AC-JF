@@ -160,17 +160,18 @@ namespace Flight_Tracker.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
+                    FlightDate = table.Column<string>(nullable: true),
                     FlightNumber = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    ZipCode = table.Column<string>(nullable: true),
+                    ZipCode = table.Column<int>(nullable: false),
                     startLatitude = table.Column<double>(nullable: true),
                     startLongitude = table.Column<double>(nullable: true),
                     endLatitude = table.Column<double>(nullable: true),
                     endLongitude = table.Column<double>(nullable: true),
-                    distance = table.Column<double>(nullable: true),
-                    duration = table.Column<double>(nullable: true),
+                    distance = table.Column<int>(nullable: true),
+                    duration = table.Column<int>(nullable: true),
                     Airport = table.Column<string>(nullable: true),
                     FlightStatus = table.Column<string>(nullable: true),
                     Gate = table.Column<string>(nullable: true),
@@ -219,7 +220,7 @@ namespace Flight_Tracker.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6e37d491-99f7-444e-9133-e9a8bbfdacdf", "acdf7d9b-29dd-4647-a577-cb95d98b8f6d", "Customer", "CUSTOMER" });
+                values: new object[] { "f2eefb79-a8cb-457c-b8c2-2b05bba3ab20", "a3aa018e-ea4f-4410-b4cd-9ef55f27c08d", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

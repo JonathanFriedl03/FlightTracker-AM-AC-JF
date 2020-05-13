@@ -4,16 +4,14 @@ using Flight_Tracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200513134759_newer")]
-    partial class newer
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +77,9 @@ namespace Flight_Tracker.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlightDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FlightNumber")
@@ -162,8 +163,13 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca861844-3e6f-42f2-8740-19628a6650b3",
-                            ConcurrencyStamp = "d147a584-c494-4ef3-9b0e-620d15029298",
+<<<<<<< HEAD:Flight Tracker/Migrations/ApplicationDbContextModelSnapshot.cs
+                            Id = "cda0d6fd-2e5a-465c-8861-4740d06bd55a",
+                            ConcurrencyStamp = "e875488a-51a9-4d5e-87c1-4be51ddc9c56",
+=======
+                            Id = "f2eefb79-a8cb-457c-b8c2-2b05bba3ab20",
+                            ConcurrencyStamp = "a3aa018e-ea4f-4410-b4cd-9ef55f27c08d",
+>>>>>>> 639ae889c15659e1cbc90699c218b84e0faadb40:Flight Tracker/Data/Migrations/ApplicationDbContextModelSnapshot.cs
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
