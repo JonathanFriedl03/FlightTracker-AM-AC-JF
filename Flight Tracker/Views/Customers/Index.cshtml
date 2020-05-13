@@ -1,175 +1,164 @@
 ﻿@model Flight_Tracker.Models.Customer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <h5>
-            <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" /> 
-        </h5>
-        <h5>
-            <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
-        </h5>
-            <button type="submit" value="Submit" class="btn-primary">Submit</button>
+<br/>
+
+<div class="border backgroundWhite">
+    <div class="row">
+        @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
+        <div class="col-6">
+            <h2 class="text-info">Account Overview</h2>
+        </div>
+
     </div>
-</form>
-<div>
-    @if (ViewBag.Check > 0)
-    {
+    <br />
+    <div>
+        <form asp-action="Index" method="get">
+            <div class="form-actions no-color">
+                <h5>
+                    <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
+                </h5>
+                <h5>
+                    <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
+                </h5>
+                <button type="submit" value="Submit" class="btn-primary">Submit</button>
+            </div>
+        </form>
         <div>
-            <h5>@Html.DropDownList("Departures")</h5>
+            @if (ViewBag.Check > 0)
+            {
+                <div>
+                    <h5>@Html.DropDownList("Departures")</h5>
+                </div>
+                <div>
+                    <h5>@Html.DropDownList("Arrivals")</h5>
+                </div>
+            }
+            else
+            {
+                <div style="display: none;">
+                    <h5>@Html.DropDownList("Departures")</h5>
+                </div>
+                <div style="display: none;">
+                    <h5>@Html.DropDownList("Arrivals")</h5>
+                </div>
+            }
         </div>
-        <div>
-            <h5>@Html.DropDownList("Arrivals")</h5>
-        </div>
-    }
-    else
-    {
-        <div style="display: none;">
-            <h5>@Html.DropDownList("Departures")</h5>
-        </div>
-        <div style="display: none;">
-            <h5>@Html.DropDownList("Arrivals")</h5>
-        </div>
-    }
-</div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FlightNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StreetAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ZipCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Airport)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FlightStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Delay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedDeparture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualDeparture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedArrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualArrival)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.FlightNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.StreetAddress)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.State)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.ZipCode)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Latitude)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Longitude)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Airport)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.FlightStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Gate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Delay)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.EstimatedDeparture)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.ActualDeparture)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.EstimatedArrival)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.ActualArrival)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.IdentityUser.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-                </td>
+    </div>
+
+    <div>
+        <table id="tblData" class="table table-striped border">
+
+
+
+            <tr class="table-secondary">
+                >
+                <th>
+                    @Html.DisplayNameFor(model => model.FlightNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StreetAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.City)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.State)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ZipCode)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.Airport)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FlightStatus)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Delay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EstimatedDeparture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActualDeparture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EstimatedArrival)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActualArrival)
+                </th>
+
+                <th></th>
             </tr>
-    </tbody>
-</table>
+
+            <tbody>
+
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.FlightNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.StreetAddress)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ZipCode)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Airport)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.FlightStatus)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Gate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Delay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EstimatedDeparture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ActualDeparture)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.EstimatedArrival)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ActualArrival)
+                    </td>
+
+                    <td class="whiteSpace" colspan="1" width:5px">
+                        <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a asp-action="Details" class="btn btn-info" asp-route-id="@Model.Id"><i class="fas fa-search"></i></a>
+                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model.Id"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>     
+</div>

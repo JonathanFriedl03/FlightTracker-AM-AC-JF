@@ -23,7 +23,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class="col-sm-2">
+        @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dd class="col-sm-10">
@@ -34,7 +34,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
-        </dd>
+        </dd>*@
        
     </dl>
 </div>
@@ -51,23 +51,81 @@
         width: 700px;   
     }
 </style>
-<div class="row">
 
-    <div id="map"></div>
-    <script>
-        //var map;
-        var markers = [];
-        function initMap() {
-            var directionsService = new google.maps.DirectionsService();
-            var directionsRenderer = new google.maps.DirectionsRenderer();
-       var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:@Model.Latitude, lng:@Model.Longitude},
-          zoom: 8
-       });
-            directionsRenderer.setMap(map);
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=@ViewBag.APIKeys&callback=initMap"
-            async defer></script>
+    <div class="row">
+        <div id="map">
+            <script>
+                function initMap() {
+                    var markerArray = [];
+       
+                    var start = { lat:@Model.startLatitude, lng: @Model.startLongitude};
+                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};
+        
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsRenderer = new google.maps.DirectionsRenderer();//{ map: map }
+                    
+                    //var startingLocation = new google.maps.LatLng(start);
+                   // var mapOptions = {
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 7,
+                        center: start
+                    });
+                    directionsRenderer.setMap(map);
+                    calcRoute(directionsService, directionsRenderer) {
+                        directionsService.route(
+                            {
+                                origin: start,
+                                destination: end
+                            },
+                            function (response, status) {
+                                if (status == 'OK') {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            });
+                    }
+                    calcRoute(directionsService, directionsRenderer) {
+                        directionsService.route(
+                            {
+                                origin: start,
+                                destination: end
+                            },
+                            function (response, status) {
+                                if (status == 'OK') {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            });
+                    }
 
+                   
+
+                    
+                    }
+                  
+                   
+                 //calcRoute(directionsService, directionsRenderer) {
+                 //   directionsService.route(
+                 //       {
+                 //           origin: start,
+                 //           destination: end
+                 //       },
+                 //       function (response, status) {
+                 //           if (status == 'OK') {
+                 //               directionsRenderer.setDirections(response);
+                 //           } else {
+                 //               window.alert('Directions request failed due to ' + status);
+                 //           }                        
+                 //       });
+                 //   } 
+                            
+                            //travelmode: 'DRIVING'
+                   
+                
+            </script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&callback=initMap"
+                    ></script>
+        </div>
     </div>

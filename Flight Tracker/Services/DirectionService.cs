@@ -10,39 +10,38 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Flight_Tracker.Contracts;
 
 namespace Flight_Tracker.Services
 {
-    public class DirectionService
+    public class DirectionService //: IDirectionsRequest not sure y this isnt working
     {
         public DirectionService()
         {
 
         }
 
-        //public string GetDirectionsURL(Customer customer)
-        //{
+        public async Task<TravelInfo> GetDirections(Customer customer)
+        {
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&{customer.ZipCode}&destination={customer.Airport}&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(url);
+            TravelInfo travelInfo = null;
 
-        //}
+                if (response.IsSuccessStatusCode)
+                {
+                    string data =  await response.Content.ReadAsStringAsync();
+                    travelInfo = JsonConvert.DeserializeObject<TravelInfo>(data);
+                    return travelInfo;
+                    
 
-        //public async Task<Customer> GetDirections(Customer customer)
-        //{
-        //    string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&destination=Chicago&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(url);
-        //        client.DefaultRequestHeaders.Accept.Clear();
-        //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        //        HttpResponseMessage response = await client.GetAsync(url);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string data = await response.Content.ReadAsStringAsync();
-        //            JObject jsonResults = JsonConvert.DeserializeObject<JObject>(data);
-        //            // JToken results = jsonResults[];
-        //        }
-        //        return customer;
-        //    }
-        //}
+                    //customer.Latitude = (double)location["lat"];
+                    //customer.Longitude = (double)location["lng"];
+                   // customer.Latitude = (double)location[];
+                    
+                }
+                return null;
+            
+        }
     }
 }

@@ -9,22 +9,31 @@ using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Flight_Tracker.Services;
+
 using Flight_Tracker.Contracts;
 using System.Security.Claims;
 using System.Globalization;
+
 
 namespace Flight_Tracker.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITSAWaitTimesService _tsaWaitTimesService;
+        private readonly DirectionService _directions;
         private IRepositoryWrapper _repo;
-        public DirectionService _directions;
         public FlightService _flightService;
-
-        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
+        
+        public CustomersController(ApplicationDbContext context,
+            DirectionService directions,
+            IRepositoryWrapper repo,
+            FlightService flightService,
+            ITSAWaitTimesService tsaWaitTimesService)
         {
+            _tsaWaitTimesService = tsaWaitTimesService;
             _directions = directions;
+            _tsaWaitTimesService = tsaWaitTimesService;
             _context = context;
             _repo = repo;
             _flightService = flightService;
@@ -45,7 +54,7 @@ namespace Flight_Tracker.Controllers
                 await _context.SaveChangesAsync();
             }       
             if (customer == null)
-            {
+            {    
                 return RedirectToAction("Create");
             }
             DataInfo info = await _flightService.GetArrivalInfo(customer);
@@ -66,6 +75,8 @@ namespace Flight_Tracker.Controllers
             ViewData["Departures"] = selectDepartures;
             ViewData["Arrivals"] = selectArrivals;
             //await SetFlightInfo(info, customer[0]);
+
+            //DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
             return View(customer);
         }
         public async Task SetFlightInfo(DataInfo info, Customer customer)
@@ -105,8 +116,9 @@ namespace Flight_Tracker.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            Customer customer = new Customer();
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(customer);
         }
 
         // POST: Customers/Create
@@ -120,12 +132,39 @@ namespace Flight_Tracker.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
-                _repo.Customer.CreateCustomer(customer);
+                
+                _context.Add(customer);
+
+
+                //make directions api call
+                TravelInfo travelInfo = await _directions.GetDirections(customer);
+               
+               await SetDirectionsInfo(travelInfo, customer);
+             
+
+                _repo.Customer.CreateCustomer(customer);            
+
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
+        }
+        
+        public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
+        {
+
+            customer.duration = travelInfo.routes[0].legs[0].duration.value;
+            customer.duration = customer.duration / 60;
+            customer.distance = travelInfo.routes[0].legs[0].distance.value;
+            customer.endLatitude = travelInfo.routes[0].legs[0].end_location.lat;
+            customer.endLongitude = travelInfo.routes[0].legs[0].end_location.lng;
+            customer.startLatitude = travelInfo.routes[0].legs[0].start_location.lat;
+            customer.startLongitude = travelInfo.routes[0].legs[0].start_location.lng;
+            _repo.Customer.EditCustomer(customer);
+
+            await _context.SaveChangesAsync();
         }
 
         // GET: Customers/Edit/5

@@ -1,6 +1,5 @@
 ﻿using Flight_Tracker.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +8,16 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Services
 {
-    public class FlightService
+    public class TSAWaitTimesService : ITSAWaitTimesService
     {
-        public FlightService()
+        public async Task<Airport> GetWaitTimes(string airportCode)
         {
-
-        }
-        public async Task<DataInfo> GetArrivalInfo(Customer customer)
-        {
-
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"http://api.aviationstack.com/v1/flights?access_key={APIKeys.FlightApiKey}&flight_iata={customer.FlightNumber}");
+            HttpResponseMessage response = await client.GetAsync($"https://www.tsawaittimes.com/api/airport/{APIKeys.TSAWaitTimesAPIKey}/{airportCode}/json");
             if (response.IsSuccessStatusCode)
             {
                 string json = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<DataInfo>(json);
+                return JsonConvert.DeserializeObject<Airport>(json);
             }
             return null;
         }

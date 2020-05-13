@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using System.Security.Claims;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Flight_Tracker.Controllers
 {
@@ -21,10 +23,12 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Contacts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.Contacts.Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(u => u.IdentityUserId == userId).SingleOrDefault();
+            customer.Contacts = _context.Contacts.Where(c => c.UserId == customer.Id).ToList();
+            return View(customer);
         }
 
         // GET: Contacts/Create
@@ -46,6 +50,8 @@ namespace Flight_Tracker.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
                 contact.UserId = customer.Id;
+                contact.PhoneNumber = StandardizePhoneNumber(contact.PhoneNumber);
+
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,12 +88,16 @@ namespace Flight_Tracker.Controllers
             {
                 return NotFound();
             }
-
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            contact.UserId = customer.Id;
+            contact.PhoneNumber = StandardizePhoneNumber(contact.PhoneNumber);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(contact);
+                    
+                    _context.Contacts.Update(contact);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -103,6 +113,7 @@ namespace Flight_Tracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            
             ViewData["UserId"] = new SelectList(_context.Customers, "Id", "Id", contact.UserId);
             return View(contact);
         }
@@ -141,12 +152,23 @@ namespace Flight_Tracker.Controllers
         {
             return _context.Contacts.Any(e => e.Id == id);
         }
-        public IActionResult ContactList()
+        private string StandardizePhoneNumber(string phoneNumber)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = _context.Customers.Where(u => u.IdentityUserId == userId).SingleOrDefault();
-            customer.Contacts = _context.Contacts.Where(c => c.UserId == customer.Id);
-            return View(customer);
+            var contactNumber = "+";
+            phoneNumber.ToCharArray();
+            for(int i = 0; i < phoneNumber.Length; i++)
+            {
+                if (phoneNumber[i] == '-' || phoneNumber[i] == '(' || phoneNumber[i] == ')' || phoneNumber[i] == ' ')
+                {
+                    
+                }
+                else
+                {
+                    contactNumber += phoneNumber[i];
+                }
+            }
+
+            return contactNumber;
         }
     }
 }
