@@ -51,7 +51,7 @@ namespace Flight_Tracker.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
            
-            if (customer.Count == 0)
+            if (customer == null)
             {
 
                 return RedirectToAction("Create");
@@ -92,14 +92,14 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,FlightDate,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")]Customer customer)
         {
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
                 
-                _context.Add(customer);
+                //_context.Add(customer);
 
 
                 //make directions api call

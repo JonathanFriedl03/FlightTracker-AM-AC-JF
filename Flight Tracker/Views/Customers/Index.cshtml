@@ -19,52 +19,29 @@
 
     </div>
     <div>
+
         <table id="tblData" class="table table-striped border">
 
-
-
             <tr class="table-secondary">
-                >
                 <th>
-                    @Html.DisplayNameFor(model => model.FlightNumber)
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.StreetAddress)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.City)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.State)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.ZipCode)
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.Airport)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.FlightStatus)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Gate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Delay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EstimatedDeparture)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActualDeparture)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EstimatedArrival)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActualArrival)
-                </th>
+               
 
                 <th></th>
             </tr>
@@ -74,51 +51,24 @@
 
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.FirstName)
+                        @Html.DisplayFor(modelitem => Model.FirstName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.LastName)
+                        @Html.DisplayFor(modelitem => Model.LastName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.FlightNumber)
+                        @Html.DisplayFor(modelitem => Model.StreetAddress)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.StreetAddress)
+                        @Html.DisplayFor(modelitem => Model.ZipCode)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.City)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.State)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.ZipCode)
-                    </td>
-
                     <td>
                         @Html.DisplayFor(modelItem => Model.Airport)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => Model.FlightStatus)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Gate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.Delay)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.EstimatedDeparture)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.ActualDeparture)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.EstimatedArrival)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.ActualArrival)
-                    </td>
+                   
 
                     <td class="whiteSpace" colspan="1" width:5px">
                         <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
@@ -127,10 +77,17 @@
                     </td>
                 </tr>
 
-
-
-
             </tbody>
         </table>
-    </div>     
+
+        @*else
+            {
+
+                <p class="text-center">No Info To Display. Please Setup Your Account Below</p><div class=" text-center">
+                <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; Account Setup</a>/>
+                </div>
+
+
+            }*@
+    </div>
 </div>

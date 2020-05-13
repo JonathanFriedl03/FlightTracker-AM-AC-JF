@@ -160,8 +160,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca861844-3e6f-42f2-8740-19628a6650b3",
-                            ConcurrencyStamp = "d147a584-c494-4ef3-9b0e-620d15029298",
+                            Id = "cda0d6fd-2e5a-465c-8861-4740d06bd55a",
+                            ConcurrencyStamp = "e875488a-51a9-4d5e-87c1-4be51ddc9c56",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
