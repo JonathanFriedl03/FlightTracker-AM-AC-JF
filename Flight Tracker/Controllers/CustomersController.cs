@@ -31,24 +31,32 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string flightNumber, string flightDate)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = _repo.Customer.GetCustomer(userId);           
+            var customer = _repo.Customer.GetCustomer(userId);
+            ViewData["FlightNumber"] = flightNumber;
+            ViewData["FlightDate"] = flightDate;
+            if(flightNumber != null && flightDate != null)
+            {
+                customer[0].FlightNumber = flightNumber;
+                customer[0].FlightDate = flightDate;
+                _repo.Customer.EditCustomer(customer[0]);
+                await _context.SaveChangesAsync();
+            }       
             if (customer.Count == 0)
             {
                 return RedirectToAction("Create");
             }
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
-            SetFlightInfo(info, customer[0]);
+            //DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            //SetFlightInfo(info, customer[0]);
             return View(customer);
         }
         public async Task SetFlightInfo(DataInfo info, Customer customer)
         {
-            string flightDate = customer.FlightDate.ToString("yyyy-MM-dd");
             for(int i = 0; i < info.data.Length; i++)
             {
-                if (info.data[i].flight_date == flightDate) 
+                if (info.data[i].flight_date == customer.FlightDate) 
                 {
                     customer.EstimatedDeparture = info.data[i].departure.estimated;
                     customer.Airport = info.data[i].departure.airport;
