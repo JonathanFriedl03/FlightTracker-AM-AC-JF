@@ -4,14 +4,16 @@ using Flight_Tracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200513042041_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,14 +105,14 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ZipCode")
-                        .HasColumnType("int");
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("distance")
-                        .HasColumnType("int");
+                    b.Property<double?>("distance")
+                        .HasColumnType("float");
 
-                    b.Property<int?>("duration")
-                        .HasColumnType("int");
+                    b.Property<double?>("duration")
+                        .HasColumnType("float");
 
                     b.Property<double?>("endLatitude")
                         .HasColumnType("float");
@@ -160,8 +162,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca861844-3e6f-42f2-8740-19628a6650b3",
-                            ConcurrencyStamp = "d147a584-c494-4ef3-9b0e-620d15029298",
+                            Id = "6e37d491-99f7-444e-9133-e9a8bbfdacdf",
+                            ConcurrencyStamp = "acdf7d9b-29dd-4647-a577-cb95d98b8f6d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

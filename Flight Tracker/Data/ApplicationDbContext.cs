@@ -14,6 +14,7 @@ namespace Flight_Tracker.Data
             : base(options)
         {
         }
+        
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         //public DbSet<Flight> Flights { get; set; }

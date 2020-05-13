@@ -51,31 +51,81 @@
         width: 700px;   
     }
 </style>
-<body>
+
     <div class="row">
         <div id="map">
             <script>
                 function initMap() {
-        //var map;
-                    var uluru = { lat:@Model.Latitude, lng: @Model.Longitude};
+                    var markerArray = [];
+       
+                    var start = { lat:@Model.startLatitude, lng: @Model.startLongitude};
+                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};
         
-            var directionsService = new google.maps.DirectionsService();
-            var directionsRenderer = new google.maps.DirectionsRenderer();
-                    var startingLocation = new google.maps.LatLng(uluru);
-                    var mapOptions = {
+                    var directionsService = new google.maps.DirectionsService();
+                    var directionsRenderer = new google.maps.DirectionsRenderer();//{ map: map }
+                    
+                    //var startingLocation = new google.maps.LatLng(start);
+                   // var mapOptions = {
+                    var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: 7,
-                        center: startingLocation
+                        center: start
+                    });
+                    directionsRenderer.setMap(map);
+                    calcRoute(directionsService, directionsRenderer) {
+                        directionsService.route(
+                            {
+                                origin: start,
+                                destination: end
+                            },
+                            function (response, status) {
+                                if (status == 'OK') {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            });
                     }
-                    var directionsMap = new google.maps.Map(document.getElementById('map'), mapOptions);
-                    directionsRenderer.setMap(directionsMap);
-                }
-                function calcRoute() {
-                    var start = (uluru);
-                    var end = 
-                }
+                    calcRoute(directionsService, directionsRenderer) {
+                        directionsService.route(
+                            {
+                                origin: start,
+                                destination: end
+                            },
+                            function (response, status) {
+                                if (status == 'OK') {
+                                    directionsRenderer.setDirections(response);
+                                } else {
+                                    window.alert('Directions request failed due to ' + status);
+                                }
+                            });
+                    }
+
+                   
+
+                    
+                    }
+                  
+                   
+                 //calcRoute(directionsService, directionsRenderer) {
+                 //   directionsService.route(
+                 //       {
+                 //           origin: start,
+                 //           destination: end
+                 //       },
+                 //       function (response, status) {
+                 //           if (status == 'OK') {
+                 //               directionsRenderer.setDirections(response);
+                 //           } else {
+                 //               window.alert('Directions request failed due to ' + status);
+                 //           }                        
+                 //       });
+                 //   } 
+                            
+                            //travelmode: 'DRIVING'
+                   
+                
             </script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&callback=initMap"
-                    async defer></script>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&callback=initMap"
+                    ></script>
         </div>
     </div>
-</body>

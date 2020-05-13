@@ -4,14 +4,16 @@ using Flight_Tracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200513132325_newDatatype")]
+    partial class newDatatype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,8 +162,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ca861844-3e6f-42f2-8740-19628a6650b3",
-                            ConcurrencyStamp = "d147a584-c494-4ef3-9b0e-620d15029298",
+                            Id = "78917f26-8b20-4117-b1f5-f38a1f461c90",
+                            ConcurrencyStamp = "906b23f9-91bb-41d2-a780-88db35933a9d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

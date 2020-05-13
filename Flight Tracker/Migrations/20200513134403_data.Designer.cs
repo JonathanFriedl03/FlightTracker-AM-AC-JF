@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Flight_Tracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200512194411_initial")]
-    partial class initial
+    [Migration("20200513134403_data")]
+    partial class data
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -96,12 +96,6 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Longitude")
-                        .HasColumnType("float");
-
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
@@ -111,8 +105,26 @@ namespace Flight_Tracker.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ZipCode")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("distance")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("duration")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("endLatitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("endLongitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("startLatitude")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("startLongitude")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -150,8 +162,8 @@ namespace Flight_Tracker.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1d736911-df75-4d56-a0c9-ab2c9bae09ff",
-                            ConcurrencyStamp = "822b53f9-4a5a-401f-ae4f-4dfd4b24c2a0",
+                            Id = "272f8f43-9ba0-44ec-938f-6298edfb3a08",
+                            ConcurrencyStamp = "f68fb2e0-f1cc-45e2-bcd2-7d79be64de05",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });

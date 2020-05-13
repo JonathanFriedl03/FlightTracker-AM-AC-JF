@@ -165,8 +165,12 @@ namespace Flight_Tracker.Migrations
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
-                    Latitude = table.Column<double>(nullable: true),
-                    Longitude = table.Column<double>(nullable: true),
+                    startLatitude = table.Column<double>(nullable: true),
+                    startLongitude = table.Column<double>(nullable: true),
+                    endLatitude = table.Column<double>(nullable: true),
+                    endLongitude = table.Column<double>(nullable: true),
+                    distance = table.Column<double>(nullable: true),
+                    duration = table.Column<double>(nullable: true),
                     Airport = table.Column<string>(nullable: true),
                     FlightStatus = table.Column<string>(nullable: true),
                     Gate = table.Column<string>(nullable: true),
@@ -215,7 +219,7 @@ namespace Flight_Tracker.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "1d736911-df75-4d56-a0c9-ab2c9bae09ff", "822b53f9-4a5a-401f-ae4f-4dfd4b24c2a0", "Customer", "CUSTOMER" });
+                values: new object[] { "6e37d491-99f7-444e-9133-e9a8bbfdacdf", "acdf7d9b-29dd-4647-a577-cb95d98b8f6d", "Customer", "CUSTOMER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -24,7 +24,7 @@ namespace Flight_Tracker.Controllers
         private IRepositoryWrapper _repo;
 
         public FlightService _flightService;
-
+        
 
         public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
         {
@@ -50,7 +50,7 @@ namespace Flight_Tracker.Controllers
 
                 return RedirectToAction("Create");
             }
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+           // DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
             return View(customer);
 
         }
@@ -92,17 +92,31 @@ namespace Flight_Tracker.Controllers
                 customer.IdentityUserId = userId;
 
                 //make directions api call
-                var customersLatLng = await _directions.GetDirections(customer);
-
-              
-
-                _repo.Customer.CreateCustomer(customersLatLng);
+                TravelInfo travelInfo = await _directions.GetDirections(customer);
+               
+               await SetDirectionsInfo(travelInfo, customer);
+             
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return View(customer);
+        }
+        
+            public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
+        {
+
+            customer.duration = travelInfo.routes[0].legs[0].duration.value;
+            customer.duration = customer.duration / 60;
+            customer.distance = travelInfo.routes[0].legs[0].distance.value;
+            customer.endLatitude = travelInfo.routes[0].legs[0].end_location.lat;
+            customer.endLongitude = travelInfo.routes[0].legs[0].end_location.lng;
+            customer.startLatitude = travelInfo.routes[0].legs[0].start_location.lat;
+            customer.startLongitude = travelInfo.routes[0].legs[0].start_location.lng;
+            _repo.Customer.EditCustomer(customer);
+
+            await _context.SaveChangesAsync();
         }
 
         // GET: Customers/Edit/5
