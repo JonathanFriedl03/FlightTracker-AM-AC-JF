@@ -13,7 +13,7 @@ namespace Flight_Tracker.Services
         public async Task<Airport> GetWaitTimes(string airportCode)
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"https://www.tsawaittimes.com/api/airport/{APIKeys.APIKey.TSAWaitTimesAPIKey}/{airportCode}/json");
+            HttpResponseMessage response = await client.GetAsync($"https://www.tsawaittimes.com/api/airport/{APIKeys.APIKeys.TSAWaitTimesAPIKey}/{airportCode}/json");
             if (response.IsSuccessStatusCode)
             {
                 string json = response.Content.ReadAsStringAsync().Result;

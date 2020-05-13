@@ -12,14 +12,14 @@ namespace Flight_Tracker.Services
     {
         public void SendTextMessage(Contact contact)
         {
-            string accountSid = APIKeys.APIKey.TwilioAccountSid;
-            string authToken = APIKeys.APIKey.TwilioAuthToken;
+            string accountSid = APIKeys.APIKeys.TwilioAccountSid;
+            string authToken = APIKeys.APIKeys.TwilioAuthToken;
 
             TwilioClient.Init(accountSid, authToken);
 
             var message = MessageResource.Create(
                 body: "Join Earth's mightiest heroes. Like Kevin Bacon.",
-                from: new Twilio.Types.PhoneNumber(APIKeys.APIKey.TwilioPhoneNumber),
+                from: new Twilio.Types.PhoneNumber(APIKeys.APIKeys.TwilioPhoneNumber),
                 to: new Twilio.Types.PhoneNumber(contact.PhoneNumber)
             );
             Console.WriteLine(message.Sid);
