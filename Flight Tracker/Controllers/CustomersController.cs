@@ -24,13 +24,13 @@ namespace Flight_Tracker.Controllers
         private IRepositoryWrapper _repo;
         public FlightService _flightService;
         
-
         public CustomersController(ApplicationDbContext context,
             DirectionService directions,
             IRepositoryWrapper repo,
             FlightService flightService,
             ITSAWaitTimesService tsaWaitTimesService)
         {
+            _tsaWaitTimesService = tsaWaitTimesService;
             _directions = directions;
             _tsaWaitTimesService = tsaWaitTimesService;
             _context = context;
