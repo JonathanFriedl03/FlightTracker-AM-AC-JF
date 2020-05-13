@@ -40,7 +40,7 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string flightNumber, string flightDate, string flight)
+        public async Task<IActionResult> Index(string flightNumber, string flightDate)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
@@ -57,26 +57,22 @@ namespace Flight_Tracker.Controllers
             {    
                 return RedirectToAction("Create");
             }
-            DataInfo info = await _flightService.GetArrivalInfo(customer);
-            List<Departure> departures = new List<Departure>();
-            List<Arrival> arrivals = new List<Arrival>();
-            ViewBag.Check = info.pagination.count;
-            for (int i = 0; i < info.data.Length; i++)
+            ViewBag.Check = customer.FlightNumber;
+            DataInfo info = new DataInfo();
+            List<string> flightData = new List<string>();
+            if (customer.FlightNumber != null)
             {
-                Departure departure = new Departure();
-                departure = info.data[i].departure;
-                departures.Add(departure);
-                Arrival arrival = new Arrival();
-                arrival = info.data[i].arrival;
-                arrivals.Add(arrival);
+                info = await _flightService.GetArrivalInfo(customer);
+                
+                for (int i = 0; i < info.data.Length; i++)
+                {
+                    string flight = info.data[i].departure.airport + " " + info.data[i].departure.scheduled;
+                    flightData.Add(flight);
+                }  
             }
-            SelectList selectDepartures = new SelectList(departures, "airport", "airport");
-            SelectList selectArrivals = new SelectList(arrivals, "airport", "airport");
-            ViewData["Departures"] = selectDepartures;
-            ViewData["Arrivals"] = selectArrivals;
+            SelectList selectFlights = new SelectList(flightData);
+            ViewData["Flights"] = selectFlights;
             //await SetFlightInfo(info, customer[0]);
-
-            //DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
             return View(customer);
         }
         public async Task SetFlightInfo(DataInfo info, Customer customer)
@@ -132,24 +128,16 @@ namespace Flight_Tracker.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
-                
-                _context.Add(customer);
-
-
                 //make directions api call
                 TravelInfo travelInfo = await _directions.GetDirections(customer);
                
                await SetDirectionsInfo(travelInfo, customer);
-             
-
                 _repo.Customer.CreateCustomer(customer);            
-
-
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            return RedirectToAction(nameof(Index)); ;
         }
         
         public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)

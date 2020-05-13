@@ -29,23 +29,19 @@
             </div>
         </form>
         <div>
-            @if (ViewBag.Check > 0)
+            @if (ViewBag.Check != null)
             {
                 <div>
-                    <h5>@Html.DropDownList("Departures")</h5>
+                    <h5>@Html.DropDownList("Flights")</h5>
                 </div>
-                <div>
-                    <h5>@Html.DropDownList("Arrivals")</h5>
-                </div>
+                <button type="submit" value="Submit" class="btn-primary">Submit</button>
             }
             else
             {
                 <div style="display: none;">
-                    <h5>@Html.DropDownList("Departures")</h5>
+                    <h5>@Html.DropDownList("Flights")</h5>
                 </div>
-                <div style="display: none;">
-                    <h5>@Html.DropDownList("Arrivals")</h5>
-                </div>
+                <button style="display: none;" type="submit" value="Submit" class="btn-primary">Submit</button>
             }
         </div>
     </div>

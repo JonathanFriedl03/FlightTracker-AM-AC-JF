@@ -17,7 +17,6 @@ namespace Flight_Tracker.Data
         
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        //public DbSet<Flight> Flights { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
