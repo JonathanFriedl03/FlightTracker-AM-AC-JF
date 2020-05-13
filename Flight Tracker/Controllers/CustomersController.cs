@@ -21,11 +21,7 @@ namespace Flight_Tracker.Controllers
         private readonly ApplicationDbContext _context;
 
         private readonly ITSAWaitTimesService _tsaWaitTimesService;
-        public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
-        {
-            _tsaWaitTimesService = tsaWaitTimesService;
-            _context = context;
-        }
+      
 
         private readonly DirectionService _directions;
 
@@ -34,8 +30,9 @@ namespace Flight_Tracker.Controllers
         public FlightService _flightService;
         
 
-        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
+        public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService, ITSAWaitTimesService tsaWaitTimesService)
         {
+            _tsaWaitTimesService = tsaWaitTimesService;
             _directions = directions;
 
             _context = context;
