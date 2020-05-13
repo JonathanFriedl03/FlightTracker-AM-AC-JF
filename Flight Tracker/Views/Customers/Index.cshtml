@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Flight_Tracker.Models.Customer>
+﻿@model Flight_Tracker.Models.Customer
 
 @{
     ViewData["Title"] = "Index";
@@ -17,6 +17,26 @@
             <button type="submit" value="Submit" class="btn-primary">Submit</button>
     </div>
 </form>
+<div>
+    @if (ViewBag.Check > 0)
+    {
+        <div>
+            <h5>@Html.DropDownList("Departures")</h5>
+        </div>
+        <div>
+            <h5>@Html.DropDownList("Arrivals")</h5>
+        </div>
+    }
+    else
+    {
+        <div style="display: none;">
+            <h5>@Html.DropDownList("Departures")</h5>
+        </div>
+        <div style="display: none;">
+            <h5>@Html.DropDownList("Arrivals")</h5>
+        </div>
+    }
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -84,75 +104,72 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayFor(modelItem => Model.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
+                    @Html.DisplayFor(modelItem => Model.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FlightNumber)
+                    @Html.DisplayFor(modelItem => Model.FlightNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StreetAddress)
+                    @Html.DisplayFor(modelItem => Model.StreetAddress)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.City)
+                    @Html.DisplayFor(modelItem => Model.City)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.State)
+                    @Html.DisplayFor(modelItem => Model.State)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ZipCode)
+                    @Html.DisplayFor(modelItem => Model.ZipCode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Latitude)
+                    @Html.DisplayFor(modelItem => Model.Latitude)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Longitude)
+                    @Html.DisplayFor(modelItem => Model.Longitude)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Airport)
+                    @Html.DisplayFor(modelItem => Model.Airport)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FlightStatus)
+                    @Html.DisplayFor(modelItem => Model.FlightStatus)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Gate)
+                    @Html.DisplayFor(modelItem => Model.Gate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Delay)
+                    @Html.DisplayFor(modelItem => Model.Delay)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EstimatedDeparture)
+                    @Html.DisplayFor(modelItem => Model.EstimatedDeparture)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActualDeparture)
+                    @Html.DisplayFor(modelItem => Model.ActualDeparture)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EstimatedArrival)
+                    @Html.DisplayFor(modelItem => Model.EstimatedArrival)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ActualArrival)
+                    @Html.DisplayFor(modelItem => Model.ActualArrival)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
+                    @Html.DisplayFor(modelItem => Model.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => Model.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdentityUser.Id)
+                    @Html.DisplayFor(modelItem => Model.IdentityUser.Id)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 </td>
             </tr>
-        }
     </tbody>
 </table>

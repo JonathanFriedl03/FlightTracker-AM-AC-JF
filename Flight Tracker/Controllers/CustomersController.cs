@@ -31,7 +31,7 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string flightNumber, string flightDate)
+        public async Task<IActionResult> Index(string flightNumber, string flightDate, string flight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
@@ -39,30 +39,50 @@ namespace Flight_Tracker.Controllers
             ViewData["FlightDate"] = flightDate;
             if(flightNumber != null && flightDate != null)
             {
-                customer[0].FlightNumber = flightNumber;
-                customer[0].FlightDate = flightDate;
-                _repo.Customer.EditCustomer(customer[0]);
+                customer.FlightNumber = flightNumber.Trim();
+                customer.FlightDate = flightDate;
+                _repo.Customer.EditCustomer(customer);
                 await _context.SaveChangesAsync();
             }       
-            if (customer.Count == 0)
+            if (customer == null)
             {
                 return RedirectToAction("Create");
             }
-            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
-            await SetFlightInfo(info, customer[0]);
+            DataInfo info = await _flightService.GetArrivalInfo(customer);
+            List<Departure> departures = new List<Departure>();
+            List<Arrival> arrivals = new List<Arrival>();
+            ViewBag.Check = info.pagination.count;
+            for (int i = 0; i < info.data.Length; i++)
+            {
+                Departure departure = new Departure();
+                departure = info.data[i].departure;
+                departures.Add(departure);
+                Arrival arrival = new Arrival();
+                arrival = info.data[i].arrival;
+                arrivals.Add(arrival);
+            }
+            SelectList selectDepartures = new SelectList(departures, "airport", "airport");
+            SelectList selectArrivals = new SelectList(arrivals, "airport", "airport");
+            ViewData["Departures"] = selectDepartures;
+            ViewData["Arrivals"] = selectArrivals;
+            //await SetFlightInfo(info, customer[0]);
             return View(customer);
         }
         public async Task SetFlightInfo(DataInfo info, Customer customer)
         {
-            for(int i = 0; i < info.data.Length; i++)
+            List<SelectListItem> flights = null;
+            for (int i = 0; i < info.data.Length; i++)
             {
-                if (info.data[i].flight_date == customer.FlightDate) 
-                {
-                    customer.EstimatedDeparture = info.data[i].departure.estimated;
-                    customer.Airport = info.data[i].departure.airport;
-                    _repo.Customer.EditCustomer(customer);
-                    await _context.SaveChangesAsync();
-                }
+                var newFlight = new SelectListItem() { Text = info.data[i].departure.airport, Value=info.data[i].departure.airport};
+                flights.Add(newFlight);
+
+                    //if (info.data[i].flight_date == customer.FlightDate) 
+                    //{
+                    //    customer.EstimatedDeparture = info.data[i].departure.estimated;
+                    //    customer.Airport = info.data[i].departure.airport;
+                    //    _repo.Customer.EditCustomer(customer);
+                    //    await _context.SaveChangesAsync();
+                    //}
             }
         }
 
