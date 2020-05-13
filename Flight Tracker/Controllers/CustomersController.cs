@@ -48,8 +48,8 @@ namespace Flight_Tracker.Controllers
             {
                 return RedirectToAction("Create");
             }
-            //DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
-            //SetFlightInfo(info, customer[0]);
+            DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+            await SetFlightInfo(info, customer[0]);
             return View(customer);
         }
         public async Task SetFlightInfo(DataInfo info, Customer customer)
