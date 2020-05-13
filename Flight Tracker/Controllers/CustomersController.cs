@@ -56,7 +56,9 @@ namespace Flight_Tracker.Controllers
 
                 return RedirectToAction("Create");
             }
-           // DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+
+            //DataInfo info = await _flightService.GetArrivalInfo(customer[0]);
+
             return View(customer);
 
         }
