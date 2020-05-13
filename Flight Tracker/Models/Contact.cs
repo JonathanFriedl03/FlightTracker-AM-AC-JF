@@ -15,7 +15,7 @@ namespace Flight_Tracker.Models
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
 
-        [ForeignKey("Customer")]
+        [ForeignKey("User")]
         public int UserId { get; set; }
         public Customer User { get; set; }
     }

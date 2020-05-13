@@ -1,23 +1,18 @@
 ﻿@model IEnumerable<Flight_Tracker.Models.Customer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Home";
 }
 
-<h1>Index</h1>
+<h1>Home</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
+    
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FlightNumber)
             </th>
@@ -71,6 +66,7 @@
         </tr>
     </thead>
     <tbody>
+<<<<<<< HEAD
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -135,6 +131,8 @@
             </td>
         </tr>
 }
+=======
+>>>>>>> f7788c32113994c8335745d056fb19557bcd2784
     </tbody>
 </table>
 

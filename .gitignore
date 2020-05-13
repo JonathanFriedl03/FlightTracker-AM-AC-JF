@@ -350,6 +350,23 @@ MigrationBackup/
 .ionide/
 
 <<<<<<< HEAD
+
+APIKey.cs
+/Flight Tracker/Migrations
+
+
 APIKeys.cs
+
+/Flight Tracker/Migrations
+
+Flight_Tracker/Migrations
+
+#Migration Folder
+
+
+APIKeys.cs
+
 /Migrations
+
+/Flight_Tracker/Migrations
 

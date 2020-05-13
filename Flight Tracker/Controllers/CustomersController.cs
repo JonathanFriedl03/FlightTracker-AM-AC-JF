@@ -9,8 +9,10 @@ using Flight_Tracker.Data;
 using Flight_Tracker.Models;
 using Microsoft.AspNetCore.Authorization;
 using Flight_Tracker.Services;
+
 using Flight_Tracker.Contracts;
 using System.Security.Claims;
+
 
 namespace Flight_Tracker.Controllers
 {
@@ -18,6 +20,12 @@ namespace Flight_Tracker.Controllers
     {
         private readonly ApplicationDbContext _context;
 
+        private readonly ITSAWaitTimesService _tsaWaitTimesService;
+        public CustomersController(ApplicationDbContext context, ITSAWaitTimesService tsaWaitTimesService)
+        {
+            _tsaWaitTimesService = tsaWaitTimesService;
+            _context = context;
+        }
 
         private readonly DirectionService _directions;
 
@@ -29,6 +37,7 @@ namespace Flight_Tracker.Controllers
         public CustomersController(ApplicationDbContext context, DirectionService directions, IRepositoryWrapper repo, FlightService flightService)
         {
             _directions = directions;
+
             _context = context;
             _repo = repo;
             _flightService = flightService;
@@ -90,12 +99,18 @@ namespace Flight_Tracker.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
+                
+                _context.Add(customer);
+
 
                 //make directions api call
                 TravelInfo travelInfo = await _directions.GetDirections(customer);
                
                await SetDirectionsInfo(travelInfo, customer);
              
+
+                _repo.Customer.CreateCustomer(customer);            
+
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
