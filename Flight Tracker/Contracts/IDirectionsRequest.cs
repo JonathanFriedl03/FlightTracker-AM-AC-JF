@@ -8,6 +8,6 @@ namespace Flight_Tracker.Contracts
 {
     public interface IDirectionsRequest
     {
-        Task<Customer> GetDirections();
+        Task<TravelInfo> GetDirections();
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Models
 {
+
     public class TravelInfo
     {
         public Geocoded_Waypoints[] geocoded_waypoints { get; set; }
@@ -138,6 +139,7 @@ namespace Flight_Tracker.Models
         public float lat { get; set; }
         public float lng { get; set; }
     }
+
 
 
 }

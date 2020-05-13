@@ -363,9 +363,10 @@ Flight_Tracker/Migrations
 
 #Migration Folder
 
-=======
-<<<<<<< HEAD
+
 APIKeys.cs
+
+/Migrations
+
 /Flight_Tracker/Migrations
->>>>>>> 30c828c90d5e9d4b361b41cc022ddfdce71cd64e
 
