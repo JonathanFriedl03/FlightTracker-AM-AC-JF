@@ -34,7 +34,7 @@
                     <select name="SearchFlight" id="Flights" value="@ViewData["selectedFlight"]" onchange="myFunction()">
                         @for(int i = 0; i < ViewBag.Flights.Length; i++)
                         {
-                            <option value="@i" >Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                            <option value="@i.ToString()" >Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
                         }
                     </select>
                     <button type="submit" value="Submit" class="btn-primary">Submit</button>
