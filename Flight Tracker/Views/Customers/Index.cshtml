@@ -20,30 +20,35 @@
         <form asp-action="Index" method="get">
             <div class="form-actions no-color">
                 <h5>
+                    <label for="myFlightNumber">Enter Flight Number:</label>
                     <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
                 </h5>
                 <h5>
+                    <label for="myFlightDate">Enter Flight Date:</label>
                     <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
                 </h5>
                 <button type="submit" value="Submit" class="btn-primary">Submit</button>
             </div>
         </form>
         <div>
-            @if (ViewBag.Check != null)
+            @if (ViewBag.Check != null && ViewBag.Check != "")
             {
-                <div>
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-            else
-            {
-                <div style="display: none;">
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button style="display: none;" type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-        </div>
+                <form asp-action="Index" method="get">
+                    <label for="Flights">Select Your Flight:</label>
+                    <select name="SearchFlight" id="Flights" value="@ViewData["selectedFlight"]" onchange="myFunction()">
+                        @for(int i = 0; i < ViewBag.Flights.Length; i++)
+                        {
+                            <option value="@ViewBag.Flights[i].departure.airport">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                        }
+                    </select>
+                    <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                </form>
+             }
+             else
+             {
+                <p></p>
+             }
+            </div>
     </div>
 
     <div>
@@ -68,7 +73,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ZipCode)
                 </th>
-
                 <th>
                     @Html.DisplayNameFor(model => model.Airport)
                 </th>
@@ -101,12 +105,6 @@
 
 
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model.LastName)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => Model.FlightNumber)
                     </td>

@@ -40,7 +40,7 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string flightNumber, string flightDate)
+        public async Task<IActionResult> Index(string flightNumber, string flightDate, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
@@ -59,37 +59,29 @@ namespace Flight_Tracker.Controllers
             }
             ViewBag.Check = customer.FlightNumber;
             DataInfo info = new DataInfo();
-            List<string> flightData = new List<string>();
-            if (customer.FlightNumber != null)
+            if (customer.FlightNumber != null && customer.FlightNumber != "" )
             {
                 info = await _flightService.GetArrivalInfo(customer);
-                
-                for (int i = 0; i < info.data.Length; i++)
-                {
-                    string flight = info.data[i].departure.airport + " " + info.data[i].departure.scheduled;
-                    flightData.Add(flight);
-                }  
             }
-            SelectList selectFlights = new SelectList(flightData);
-            ViewData["Flights"] = selectFlights;
-            //await SetFlightInfo(info, customer[0]);
+            ViewBag.Flights = info.data;
+            ViewData["SelectedFlight"] = searchFlight;
+            if(info.data != null)
+            {
+                await SetFlightInfo(info, customer, searchFlight);
+            }
             return View(customer);
         }
-        public async Task SetFlightInfo(DataInfo info, Customer customer)
+        public async Task SetFlightInfo(DataInfo info, Customer customer, string airport)
         {
-            List<SelectListItem> flights = null;
             for (int i = 0; i < info.data.Length; i++)
             {
-                var newFlight = new SelectListItem() { Text = info.data[i].departure.airport, Value=info.data[i].departure.airport};
-                flights.Add(newFlight);
-
-                    //if (info.data[i].flight_date == customer.FlightDate) 
-                    //{
-                    //    customer.EstimatedDeparture = info.data[i].departure.estimated;
-                    //    customer.Airport = info.data[i].departure.airport;
-                    //    _repo.Customer.EditCustomer(customer);
-                    //    await _context.SaveChangesAsync();
-                    //}
+                if (info.data[i].departure.airport == airport)
+                {
+                    customer.EstimatedDeparture = info.data[i].departure.estimated;
+                    customer.Airport = info.data[i].departure.airport;
+                    _repo.Customer.EditCustomer(customer);
+                    await _context.SaveChangesAsync();
+                }
             }
         }
 
