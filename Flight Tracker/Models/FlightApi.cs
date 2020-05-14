@@ -39,7 +39,7 @@ namespace Flight_Tracker.Models
             public string icao { get; set; }
             public string terminal { get; set; }
             public string gate { get; set; }
-            public object delay { get; set; }
+            public int delay { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime estimated { get; set; }
             public DateTime? actual { get; set; }

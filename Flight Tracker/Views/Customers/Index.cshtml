@@ -23,10 +23,6 @@
                     <label for="myFlightNumber">Enter Flight Number:</label>
                     <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
                 </h5>
-                <h5>
-                    <label for="myFlightDate">Enter Flight Date:</label>
-                    <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
-                </h5>
                 <button type="submit" value="Submit" class="btn-primary">Submit</button>
             </div>
         </form>
@@ -38,7 +34,7 @@
                     <select name="SearchFlight" id="Flights" value="@ViewData["selectedFlight"]" onchange="myFunction()">
                         @for(int i = 0; i < ViewBag.Flights.Length; i++)
                         {
-                            <option value="@ViewBag.Flights[i].departure.airport">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                            <option value="@i" >Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
                         }
                     </select>
                     <button type="submit" value="Submit" class="btn-primary">Submit</button>
@@ -69,32 +65,6 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ZipCode)
                 </th>
-<<<<<<< HEAD
-                <th>
-                    @Html.DisplayNameFor(model => model.Airport)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FlightStatus)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Gate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Delay)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EstimatedDeparture)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActualDeparture)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EstimatedArrival)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActualArrival)
-                </th>
-
                 <th></th>
             </tr>
             <tbody>
