@@ -41,7 +41,13 @@ namespace Flight_Tracker.Models
         public IEnumerable<Contact> Contacts { get; set; }
         public string UserName { get; internal set; }
         public string Email { get; internal set; }
+        public string Airline { get; set; }
+        public string ArrivalAirport { get; set; }
+        public string AirportCode { get; set; }
+        [NotMapped]
+        public Airport AirportTimes { get; set; }
 
+        public double? TSAWaitTimeOnArrival { get; set; }
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
