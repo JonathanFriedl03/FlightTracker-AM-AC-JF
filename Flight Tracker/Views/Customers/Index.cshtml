@@ -4,55 +4,52 @@
     ViewData["Title"] = "Home";
 }
 
-
 <br/>
-
 <div class="border backgroundWhite">
     <div class="row">
         @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
         <div class="col-6">
             <h2 class="text-info">Account Overview</h2>
         </div>
-
     </div>
     <br />
     <div>
         <form asp-action="Index" method="get">
             <div class="form-actions no-color">
                 <h5>
+                    <label for="myFlightNumber">Enter Flight Number:</label>
                     <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
-                </h5>
-                <h5>
-                    <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
                 </h5>
                 <button type="submit" value="Submit" class="btn-primary">Submit</button>
             </div>
         </form>
         <div>
-            @if (ViewBag.Check != null)
+            @if (ViewBag.Check != null && ViewBag.Check != "")
             {
-                <div>
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-            else
-            {
-                <div style="display: none;">
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button style="display: none;" type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-        </div>
+                <form asp-action="Index" method="get">
+                    <label for="Flights">Select Your Flight:</label>
+                    <select name="SearchFlight" id="Flights" value="@ViewData["selectedFlight"]" onchange="myFunction()">
+                        @for(int i = 0; i < ViewBag.Flights.Length; i++)
+                        {
+                            <option value="@i" >Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                        }
+                    </select>
+                    <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                </form>
+             }
+             else
+             {
+                <p></p>
+             }
+            </div>
     </div>
 
     <div>
 
         <table id="tblData" class="table table-striped border">
-
-            <tr class="table-secondary">
+            <tr class="table-secondary">                
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    Name
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.LastName)
@@ -63,27 +60,13 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ZipCode)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Airport)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FlightStatus)
-                </th>
-               
-
                 <th></th>
             </tr>
-
             <tbody>
-
-
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelitem => Model.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelitem => Model.LastName)
-                    </td>
+                        @Html.DisplayFor(modelItem => Model.FirstName) @Html.DisplayFor(modelItem => Model.LastName)
+                    </td>                 
                     <td>
                         @Html.DisplayFor(modelitem => Model.StreetAddress)
                     </td>
@@ -91,33 +74,19 @@
                         @Html.DisplayFor(modelitem => Model.ZipCode)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.Airport)
+                        @Html.DisplayFor(modelItem => Model.State)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.FlightStatus)
+                        @Html.DisplayFor(modelItem => Model.ZipCode)
                     </td>
-                   
-
                     <td class="whiteSpace" colspan="1" width:5px">
                         <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                         <a asp-action="Details" class="btn btn-info" asp-route-id="@Model.Id"><i class="fas fa-search"></i></a>
                         <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model.Id"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </td>
                 </tr>
-
-
             </tbody>
-        </table>
-
-        @*else
-            {
-
-                <p class="text-center">No Info To Display. Please Setup Your Account Below</p><div class=" text-center">
-                <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; Account Setup</a>/>
-                </div>
-
-
-            }*@
+        </table>      
     </div>
 </div>
 
