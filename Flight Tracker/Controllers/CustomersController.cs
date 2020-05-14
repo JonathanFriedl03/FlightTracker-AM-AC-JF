@@ -44,6 +44,7 @@ namespace Flight_Tracker.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
+
             ViewData["FlightNumber"] = flightNumber;
             ViewData["FlightDate"] = flightDate;
             if(flightNumber != null && flightDate != null)
@@ -120,10 +121,12 @@ namespace Flight_Tracker.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
+
                 //make directions api call
-                TravelInfo travelInfo = await _directions.GetDirections(customer);
+                //TravelInfo travelInfo = await _directions.GetDirections(customer);
                
-               await SetDirectionsInfo(travelInfo, customer);
+
+               //await SetDirectionsInfo(travelInfo, customer);
                 _repo.Customer.CreateCustomer(customer);            
                 await _context.SaveChangesAsync();
                 
