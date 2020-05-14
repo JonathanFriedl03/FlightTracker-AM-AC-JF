@@ -5,9 +5,22 @@
 }
 
 <h1>Edit</h1>
+<style>
+    #clock {
+  font-family: 'Lucida Handwriting';
+  color: black;
+  font-size: 56px;
+  text-align: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+</style>
 
 <h4>Customer</h4>
 <hr />
+<body>
+    <div id="clock"></div>
+</body>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -33,6 +46,38 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script>
+    function currentTime() {
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        var sec = date.getSeconds();
+        var timeOfDay;
+        if (hour >= 12) {
+            timeOfDay = "PM"
+        }
+        else {
+            timeOfDay = "AM"
+        }
+        if (hour == 0) {
+            hour = 12;
+        }
+        if (min < 10) {
+            min = "0" + min;
+        }
+        if (sec < 10) {
+            sec = "0" + sec;
+        }
+        if (hour > 12) {
+            hour = hour - 12;
+        }
+        
+        var time = hour + " : " + min + " : " + sec + " " + timeOfDay;
+        document.getElementById("clock").innerHTML = time;
+        var t = setTimeout(function(){ currentTime() }, 1000);
+    }
+    currentTime();
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

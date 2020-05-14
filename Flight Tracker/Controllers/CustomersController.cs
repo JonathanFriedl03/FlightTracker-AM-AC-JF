@@ -40,17 +40,15 @@ namespace Flight_Tracker.Controllers
             _flightService = flightService;
         }
         // GET: Customers
-        DataInfo DataInfo = new DataInfo();
-        public async Task<IActionResult> Index(string flightNumber, string flightDate, string searchFlight)
+        public async Task<IActionResult> Index(string flightNumber, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var customerToDisplay = _repo.Customer.GetCustomer(userId);
-            if(flightNumber != null && flightDate != null)
+            if(flightNumber != null)
 
             {
                 customerToDisplay.FlightNumber = flightNumber.Trim();
-                customerToDisplay.FlightDate = flightDate;
                 _repo.Customer.EditCustomer(customerToDisplay);
                 await _context.SaveChangesAsync();
 
@@ -71,25 +69,13 @@ namespace Flight_Tracker.Controllers
             ViewBag.Flights = info.data;
             if(searchFlight != null)
             {
-<<<<<<< HEAD
                 await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
-=======
-              await SetFlightInfo(info, customerToDisplay, searchFlight);
-
->>>>>>> ab15775416a425fc98478e30c06403c83df1fdc2
             }
             return View(customerToDisplay);
         }
         public async Task SetFlightInfo(DataInfo Info, Customer customer, int index)
         {
-            customer.Airport = Info.data[index].departure.airport;
-            customer.FlightStatus = Info.data[index].flight_status;
-            customer.FlightNumber = Info.data[index].flight.iata;
-            customer.FlightDate = Info.data[index].flight_date;
-            customer.Gate = Info.data[index].departure.gate;
-            customer.Delay = Info.data[index].departure.delay;
-            customer.EstimatedDeparture = Info.data[index].departure.scheduled;
-            customer.EstimatedArrival = Info.data[index].arrival.scheduled;
+            customer.Datum = Info.data[index];
             TravelInfo travelInfo = await _directions.GetDirections(customer);
             await SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
