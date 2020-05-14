@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-
-    <Compile Remove="Migrations\20200514010020_initial.cs" />
-    <Compile Remove="Migrations\20200514010020_initial.Designer.cs" />
-
-   
   </ItemGroup>
 
   <ItemGroup>

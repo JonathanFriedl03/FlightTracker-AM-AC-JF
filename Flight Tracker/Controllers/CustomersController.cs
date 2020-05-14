@@ -41,7 +41,7 @@ namespace Flight_Tracker.Controllers
         }
         // GET: Customers
         DataInfo DataInfo = new DataInfo();
-        public async Task<IActionResult> Index(string flightNumber, string flightDate, int searchFlight)
+        public async Task<IActionResult> Index(string flightNumber, string flightDate, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -69,9 +69,10 @@ namespace Flight_Tracker.Controllers
 
             }
             ViewBag.Flights = info.data;
-            if(info.data != null )
+            if(searchFlight != null)
             {
-              await SetFlightInfo(info, customerToDisplay, searchFlight);
+
+              await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
 
             }
             return View(customerToDisplay);
