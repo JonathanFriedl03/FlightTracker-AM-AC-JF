@@ -4,62 +4,58 @@
     ViewData["Title"] = "Home";
 }
 
-
 <br/>
-
 <div class="border backgroundWhite">
     <div class="row">
         @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
         <div class="col-6">
             <h2 class="text-info">Account Overview</h2>
         </div>
-
     </div>
     <br />
     <div>
         <form asp-action="Index" method="get">
             <div class="form-actions no-color">
                 <h5>
+                    <label for="myFlightNumber">Enter Flight Number:</label>
                     <input name="FlightNumber" id="myFlightNumber" value="@ViewData["flightNumber"]" onchange="myFunction()" />
-                </h5>
-                <h5>
-                    <input type="date" name="FlightDate" id="myFlightDate" value="@ViewData["flightDate"]" onchange="myFunction()" />
                 </h5>
                 <button type="submit" value="Submit" class="btn-primary">Submit</button>
             </div>
         </form>
         <div>
-            @if (ViewBag.Check != null)
+            @if (ViewBag.Check != null && ViewBag.Check != "")
             {
-                <div>
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-            else
-            {
-                <div style="display: none;">
-                    <h5>@Html.DropDownList("Flights")</h5>
-                </div>
-                <button style="display: none;" type="submit" value="Submit" class="btn-primary">Submit</button>
-            }
-        </div>
+                <form asp-action="Index" method="get">
+                    <label for="Flights">Select Your Flight:</label>
+                    <select name="SearchFlight" id="Flights" value="@ViewData["selectedFlight"]" onchange="myFunction()">
+                        @for(int i = 0; i < ViewBag.Flights.Length; i++)
+                        {
+                            <option value="@i.ToString()" >Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                        }
+                    </select>
+                    <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                </form>
+             }
+             else
+             {
+                <p></p>
+             }
+            </div>
     </div>
 
     <div>
+
         <table id="tblData" class="table table-striped border">
             <tr class="table-secondary">                
                 <th>
                     Name
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.StreetAddress)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.City)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.State)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.ZipCode)
@@ -70,12 +66,12 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => Model.FirstName) @Html.DisplayFor(modelItem => Model.LastName)
-                    </td>                     
+                    </td>                 
                     <td>
-                        @Html.DisplayFor(modelItem => Model.StreetAddress)
+                        @Html.DisplayFor(modelitem => Model.StreetAddress)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => Model.City)
+                        @Html.DisplayFor(modelitem => Model.ZipCode)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => Model.State)
@@ -90,6 +86,7 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
-    </div>     
+        </table>      
+    </div>
 </div>
+

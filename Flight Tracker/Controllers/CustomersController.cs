@@ -1,4 +1,5 @@
-﻿using System;
+﻿  
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Flight_Tracker.Controllers
         private readonly DirectionService _directions;
         private IRepositoryWrapper _repo;
         public FlightService _flightService;
-        
+
         public CustomersController(ApplicationDbContext context,
             DirectionService directions,
             IRepositoryWrapper repo,
@@ -38,60 +39,59 @@ namespace Flight_Tracker.Controllers
             _repo = repo;
             _flightService = flightService;
         }
-
         // GET: Customers
-        public async Task<IActionResult> Index(string flightNumber, string flightDate)
+        DataInfo DataInfo = new DataInfo();
+        public async Task<IActionResult> Index(string flightNumber, string flightDate, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customer = _repo.Customer.GetCustomer(userId);
 
-            ViewData["FlightNumber"] = flightNumber;
-            ViewData["FlightDate"] = flightDate;
+            var customerToDisplay = _repo.Customer.GetCustomer(userId);
             if(flightNumber != null && flightDate != null)
+
             {
-                customer.FlightNumber = flightNumber.Trim();
-                customer.FlightDate = flightDate;
-                _repo.Customer.EditCustomer(customer);
+                customerToDisplay.FlightNumber = flightNumber.Trim();
+                customerToDisplay.FlightDate = flightDate;
+                _repo.Customer.EditCustomer(customerToDisplay);
                 await _context.SaveChangesAsync();
+
             }       
-            if (customer == null)
+            if (customerToDisplay == null)
             {    
+
                 return RedirectToAction("Create");
             }
-            ViewBag.Check = customer.FlightNumber;
+            ViewBag.Check = customerToDisplay.FlightNumber;
             DataInfo info = new DataInfo();
-            List<string> flightData = new List<string>();
-            if (customer.FlightNumber != null)
+            if (customerToDisplay.FlightNumber != null && customerToDisplay.FlightNumber != "" )
             {
-                info = await _flightService.GetArrivalInfo(customer);
-                
-                for (int i = 0; i < info.data.Length; i++)
-                {
-                    string flight = info.data[i].departure.airport + " " + info.data[i].departure.scheduled;
-                    flightData.Add(flight);
-                }  
-            }
-            SelectList selectFlights = new SelectList(flightData);
-            ViewData["Flights"] = selectFlights;
-            //await SetFlightInfo(info, customer[0]);
-            return View(customer);
-        }
-        public async Task SetFlightInfo(DataInfo info, Customer customer)
-        {
-            List<SelectListItem> flights = null;
-            for (int i = 0; i < info.data.Length; i++)
-            {
-                var newFlight = new SelectListItem() { Text = info.data[i].departure.airport, Value=info.data[i].departure.airport};
-                flights.Add(newFlight);
 
-                    //if (info.data[i].flight_date == customer.FlightDate) 
-                    //{
-                    //    customer.EstimatedDeparture = info.data[i].departure.estimated;
-                    //    customer.Airport = info.data[i].departure.airport;
-                    //    _repo.Customer.EditCustomer(customer);
-                    //    await _context.SaveChangesAsync();
-                    //}
+                info = await _flightService.GetArrivalInfo(customerToDisplay);
+
             }
+            ViewBag.Flights = info.data;
+            if(searchFlight != null)
+            {
+
+              await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
+
+            }
+            return View(customerToDisplay);
+        }
+        public async Task SetFlightInfo(DataInfo Info, Customer customer, int index)
+        {
+            customer.Airport = Info.data[index].departure.airport;
+            customer.FlightStatus = Info.data[index].flight_status;
+            customer.FlightNumber = Info.data[index].flight.iata;
+            customer.FlightDate = Info.data[index].flight_date;
+            customer.Gate = Info.data[index].departure.gate;
+            customer.Delay = Info.data[index].departure.delay;
+            customer.EstimatedDeparture = Info.data[index].departure.scheduled;
+            customer.EstimatedArrival = Info.data[index].arrival.scheduled;
+            TravelInfo travelInfo = await _directions.GetDirections(customer);
+            await SetDirectionsInfo(travelInfo, customer);
+            _repo.Customer.EditCustomer(customer);
+            await _context.SaveChangesAsync();
+
         }
 
         // GET: Customers/Details/5
@@ -131,18 +131,20 @@ namespace Flight_Tracker.Controllers
                 customer.IdentityUserId = userId;
 
                 //make directions api call
-                //TravelInfo travelInfo = await _directions.GetDirections(customer);
-               
 
-               //await SetDirectionsInfo(travelInfo, customer);
+              
                 _repo.Customer.CreateCustomer(customer);            
                 await _context.SaveChangesAsync();
+
                 
+                
+               
+
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return RedirectToAction(nameof(Index)); ;
         }
-        
+
         public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
         {
 
@@ -153,9 +155,6 @@ namespace Flight_Tracker.Controllers
             customer.endLongitude = travelInfo.routes[0].legs[0].end_location.lng;
             customer.startLatitude = travelInfo.routes[0].legs[0].start_location.lat;
             customer.startLongitude = travelInfo.routes[0].legs[0].start_location.lng;
-            _repo.Customer.EditCustomer(customer);
-
-            await _context.SaveChangesAsync();
         }
 
         // GET: Customers/Edit/5
@@ -243,7 +242,7 @@ namespace Flight_Tracker.Controllers
         private bool CustomerExists(int id)
         {
             var customer = _repo.Customer.GetCustomer(id);
-            if(customer != null)
+            if (customer != null)
             {
                 return true;
             }
@@ -254,3 +253,5 @@ namespace Flight_Tracker.Controllers
         }
     }
 }
+
+
