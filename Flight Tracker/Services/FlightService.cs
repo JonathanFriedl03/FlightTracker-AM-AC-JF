@@ -23,8 +23,6 @@ namespace Flight_Tracker.Services
             if (response.IsSuccessStatusCode)
             {
                 string json = response.Content.ReadAsStringAsync().Result;
-                JObject jObject = JObject.Parse(json);
-                //DateTime flightDate = (DateTime)jObject[]
                 return JsonConvert.DeserializeObject<DataInfo>(json);
             }
             return null;

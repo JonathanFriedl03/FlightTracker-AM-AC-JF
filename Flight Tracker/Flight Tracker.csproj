@@ -14,6 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Data\Migrations\20200513203728_initial.cs" />
+    <Compile Include="Data\Migrations\20200513203728_initial.Designer.cs" />
+    <Compile Include="Data\Migrations\ApplicationDbContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
@@ -36,6 +42,7 @@
 
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
