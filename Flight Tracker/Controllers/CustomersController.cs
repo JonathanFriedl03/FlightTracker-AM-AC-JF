@@ -1,4 +1,5 @@
-﻿using System;
+﻿  
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Flight_Tracker.Controllers
         private readonly DirectionService _directions;
         private IRepositoryWrapper _repo;
         public FlightService _flightService;
-        
+
         public CustomersController(ApplicationDbContext context,
             DirectionService directions,
             IRepositoryWrapper repo,
@@ -43,28 +44,39 @@ namespace Flight_Tracker.Controllers
         public async Task<IActionResult> Index(string flightNumber, string flightDate, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var customerToDisplay = _repo.Customer.GetCustomer(userId);
             if(flightNumber != null && flightDate != null)
+
             {
                 customerToDisplay.FlightNumber = flightNumber.Trim();
                 customerToDisplay.FlightDate = flightDate;
                 _repo.Customer.EditCustomer(customerToDisplay);
                 await _context.SaveChangesAsync();
+
             }       
             if (customerToDisplay == null)
             {    
+
                 return RedirectToAction("Create");
             }
             ViewBag.Check = customerToDisplay.FlightNumber;
             DataInfo info = new DataInfo();
             if (customerToDisplay.FlightNumber != null && customerToDisplay.FlightNumber != "" )
             {
+
                 info = await _flightService.GetArrivalInfo(customerToDisplay);
+
             }
             ViewBag.Flights = info.data;
             if(searchFlight != null)
             {
+<<<<<<< HEAD
                 await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
+=======
+              await SetFlightInfo(info, customerToDisplay, searchFlight);
+
+>>>>>>> ab15775416a425fc98478e30c06403c83df1fdc2
             }
             return View(customerToDisplay);
         }
@@ -122,15 +134,20 @@ namespace Flight_Tracker.Controllers
                 customer.IdentityUserId = userId;
 
                 //make directions api call
+
               
                 _repo.Customer.CreateCustomer(customer);            
                 await _context.SaveChangesAsync();
+
                 
+                
+               
+
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return RedirectToAction(nameof(Index)); ;
         }
-        
+
         public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
         {
 
@@ -228,7 +245,7 @@ namespace Flight_Tracker.Controllers
         private bool CustomerExists(int id)
         {
             var customer = _repo.Customer.GetCustomer(id);
-            if(customer != null)
+            if (customer != null)
             {
                 return true;
             }
@@ -239,3 +256,5 @@ namespace Flight_Tracker.Controllers
         }
     }
 }
+
+
