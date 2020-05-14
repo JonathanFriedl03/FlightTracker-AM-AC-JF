@@ -40,7 +40,6 @@ namespace Flight_Tracker.Controllers
             _flightService = flightService;
         }
         // GET: Customers
-        DataInfo DataInfo = new DataInfo();
         public async Task<IActionResult> Index(string flightNumber, string searchFlight)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -68,27 +67,14 @@ namespace Flight_Tracker.Controllers
             }
             ViewBag.Flights = info.data;
             if(searchFlight != null)
-            {
-                
+            {               
                 return await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
-
             }
             return View(customerToDisplay);
         }
         public async Task<IActionResult> SetFlightInfo(DataInfo Info, Customer customer, int index)
         {
-            customer.Airport = Info.data[index].departure.airport;
-            customer.FlightStatus = Info.data[index].flight_status;
-            customer.FlightNumber = Info.data[index].flight.iata;
-            customer.FlightDate = Info.data[index].flight_date;
-            customer.Gate = Info.data[index].departure.gate;
-            customer.Delay = Info.data[index].departure.delay;
-            customer.EstimatedDeparture = Info.data[index].departure.scheduled;
-            customer.EstimatedArrival = Info.data[index].arrival.scheduled;
-            customer.Airline = Info.data[index].airline.name;
-            customer.ArrivalAirport = Info.data[index].arrival.airport;
-            customer.AirportCode = Info.data[index].departure.iata;
-            customer.TSAWaitTimeOnArrival = null;
+            customer.Datum = Info.data[index];
             TravelInfo travelInfo = await _directions.GetDirections(customer);
             await SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
