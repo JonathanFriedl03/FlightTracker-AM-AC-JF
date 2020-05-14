@@ -7,16 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\**" />
-    <Content Remove="Data\Migrations\**" />
-    <EmbeddedResource Remove="Data\Migrations\**" />
-    <None Remove="Data\Migrations\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Data\Migrations\20200513203728_initial.cs" />
-    <Compile Include="Data\Migrations\20200513203728_initial.Designer.cs" />
-    <Compile Include="Data\Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20200514010020_initial.cs" />
+    <Compile Remove="Migrations\20200514010020_initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

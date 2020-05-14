@@ -130,10 +130,11 @@ namespace Flight_Tracker.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
                 //make directions api call
-                TravelInfo travelInfo = await _directions.GetDirections(customer);
-
-                await SetDirectionsInfo(travelInfo, customer);
                 _repo.Customer.CreateCustomer(customer);
+                TravelInfo travelInfo = await _directions.GetDirections(customer);
+                
+                await SetDirectionsInfo(travelInfo, customer);
+                
                 await _context.SaveChangesAsync();
 
             }
