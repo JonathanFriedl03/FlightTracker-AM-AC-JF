@@ -154,8 +154,12 @@ namespace Flight_Tracker.Controllers
         }
         private string StandardizePhoneNumber(string phoneNumber)
         {
-            var contactNumber = "+";
+            var contactNumber = "";
             phoneNumber.ToCharArray();
+            if(phoneNumber[0] != '+')
+            {
+                contactNumber += "+";
+            }
             for(int i = 0; i < phoneNumber.Length; i++)
             {
                 if (phoneNumber[i] == '-' || phoneNumber[i] == '(' || phoneNumber[i] == ')' || phoneNumber[i] == ' ')
