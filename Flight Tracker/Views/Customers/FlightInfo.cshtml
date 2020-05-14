@@ -1,0 +1,47 @@
+﻿@model Flight_Tracker.Models.Customer
+@{
+    ViewData["Title"] = "FlightInfo";
+}
+<br />
+    <div class="border backgroundWhite">
+        <div class="row">
+            @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
+            <div class="col-6">
+                <h2>@Html.DisplayFor(Model => Model.Airline) Flight: @Html.DisplayFor(Model => Model.FlightNumber)</h2>
+            </div>
+        </div>
+        <br />
+        <div class="container">
+            <div class="row">
+                <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport) @Html.DisplayFor(Model => Model.Datum.departure.scheduled)</span>
+            </div>
+            <div class="row">
+                <span><strong>Arrival:</strong> @Html.DisplayFor(Model => Model.Datum.arrival.airport) @Html.DisplayFor(Model => Model.Datum.arrival.scheduled)</span>
+            </div>
+            <div class="row">
+                <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport): @Html.DisplayFor(Model => Model.duration) minutes</span>
+            </div>
+            @if (Model.TSAWaitTimeOnArrival == null)
+            {
+                <div class="row">
+                    <form asp-action="FlightInfo" method="post">
+                        <label for="WaitTimes"><strong>Select During Which Time To Arrive At</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport):</label>
+                        <select name="waitTime" id="WaitTimes" value="@ViewBag.WaitTimes" onchange="myFunction()">
+                            @for (int i = 0; i < ViewBag.WaitTimes.Length; i++)
+                            {
+                                <option value="@ViewBag.WaitTimes[i].waittime">@ViewBag.WaitTimes[i].timeslot Wait Time: @ViewBag.WaitTimes[i].waittime minutes</option>
+                            }
+                        </select>
+                        <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+                    <span><strong>Estimated Total Transit Time:</strong> @ViewBag.TransitTime minutes</span>
+                </div>
+            }
+
+            </div>
+    </div>
