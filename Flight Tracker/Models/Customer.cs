@@ -12,11 +12,9 @@ namespace Flight_Tracker.Models
     {
         [Key]
         public int Id { get; set; }
+        public int flightId { get; set; }
         public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FlightDate { get; set; }
-
-        public string FlightNumber { get; set; }
+        public string LastName { get; set; }                
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
         public string City { get; set; }
@@ -30,23 +28,10 @@ namespace Flight_Tracker.Models
         public int? distance { get; set; }
         public int? duration { get; set; }
         [Display(Name = "Airport Name")]
-        public string Airport { get; set; }
-        public string ArrivalAirport { get; set; }
-        public string Airline { get; set; }
-        public string FlightStatus { get; set; }
-        public string Gate { get; set; }
-        public int? Delay { get; set; }
-        public string AirportCode { get; set; }
-        public string ArrivalAirportCode { get; set; }      
-        public DateTime? EstimatedDeparture { get; set; }
-        public DateTime? ActualDeparture { get; set; }
-        public DateTime? EstimatedArrival { get; set; }
-        public DateTime? ActualArrival { get; set; }
+
         public IEnumerable<Contact> Contacts { get; set; }
         public TimeSpan? SelectedArrivalTime { get; set; }
         public double? TSAWaitTimeOnArrival { get; set; }
-        [NotMapped]
-        public Airport AirportTimes { get; set; }
         public string UserName { get; internal set; }
         public string Email { get; internal set; }
         public long EpochTime { get; set; }
@@ -54,8 +39,6 @@ namespace Flight_Tracker.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-
-
     }
 
 }

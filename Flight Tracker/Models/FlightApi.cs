@@ -29,7 +29,7 @@ namespace Flight_Tracker.Models
             public Departure departure { get; set; }
             public Arrival arrival { get; set; }
             public Airline airline { get; set; }
-            public Flight flight { get; set; }
+            public FlightInfo flight { get; set; }
             public string aircraft { get; set; }
             public string live { get; set; }
         }

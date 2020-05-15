@@ -11,6 +11,7 @@ namespace Flight_Tracker
     {
         private ApplicationDbContext _context;
         private ICustomerRepository _customer;
+        private IFlightRepository _flight;
         public ICustomerRepository Customer 
         { 
             get 
@@ -21,6 +22,17 @@ namespace Flight_Tracker
                 } 
                 return _customer; 
             } 
+        }
+        public IFlightRepository Flight
+        {
+            get
+            {
+                if(_flight == null)
+                {
+                    _flight = new FlightRepository(_context);
+                }
+                return _flight;
+            }
         }
         public RepositoryWrapper(ApplicationDbContext context) 
         { 

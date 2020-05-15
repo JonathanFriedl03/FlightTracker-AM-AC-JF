@@ -8,6 +8,7 @@ namespace Flight_Tracker.Contracts
     public interface IRepositoryWrapper
     {
         ICustomerRepository Customer { get; }
+        IFlightRepository Flight { get; }
         void Save();
     }
 }

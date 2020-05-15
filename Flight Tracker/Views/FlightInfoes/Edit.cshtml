@@ -1,0 +1,99 @@
+﻿@model Flight_Tracker.Models.FlightInfo
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FlightInfo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="FlightNumber" class="control-label"></label>
+                <input asp-for="FlightNumber" class="form-control" />
+                <span asp-validation-for="FlightNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Airport" class="control-label"></label>
+                <input asp-for="Airport" class="form-control" />
+                <span asp-validation-for="Airport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArrivalAirport" class="control-label"></label>
+                <input asp-for="ArrivalAirport" class="form-control" />
+                <span asp-validation-for="ArrivalAirport" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Airline" class="control-label"></label>
+                <input asp-for="Airline" class="form-control" />
+                <span asp-validation-for="Airline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightStatus" class="control-label"></label>
+                <input asp-for="FlightStatus" class="form-control" />
+                <span asp-validation-for="FlightStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gate" class="control-label"></label>
+                <input asp-for="Gate" class="form-control" />
+                <span asp-validation-for="Gate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Delay" class="control-label"></label>
+                <input asp-for="Delay" class="form-control" />
+                <span asp-validation-for="Delay" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirportCode" class="control-label"></label>
+                <input asp-for="AirportCode" class="form-control" />
+                <span asp-validation-for="AirportCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ArrivalAirportCode" class="control-label"></label>
+                <input asp-for="ArrivalAirportCode" class="form-control" />
+                <span asp-validation-for="ArrivalAirportCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedDeparture" class="control-label"></label>
+                <input asp-for="EstimatedDeparture" class="form-control" />
+                <span asp-validation-for="EstimatedDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualDeparture" class="control-label"></label>
+                <input asp-for="ActualDeparture" class="form-control" />
+                <span asp-validation-for="ActualDeparture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedArrival" class="control-label"></label>
+                <input asp-for="EstimatedArrival" class="form-control" />
+                <span asp-validation-for="EstimatedArrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ActualArrival" class="control-label"></label>
+                <input asp-for="ActualArrival" class="form-control" />
+                <span asp-validation-for="ActualArrival" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
