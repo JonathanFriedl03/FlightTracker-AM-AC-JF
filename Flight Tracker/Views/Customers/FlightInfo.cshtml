@@ -2,6 +2,15 @@
 @{
     ViewData["Title"] = "FlightInfo";
 }
+    <style>
+        #clock {
+            color: black;
+            font-size: 56px;
+            text-align: center;
+            padding-top: 40px;
+            padding-bottom: 40px;
+        }
+    </style>
 <br />
     <div class="border backgroundWhite">
         <div class="row">
@@ -11,37 +20,70 @@
             </div>
         </div>
         <br />
+        <div id="clock"></div>
         <div class="container">
             <div class="row">
-                <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport) @Html.DisplayFor(Model => Model.Datum.departure.scheduled)</span>
+                <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.Airport) @Html.DisplayFor(Model => Model.EstimatedDeparture)</span>
             </div>
             <div class="row">
-                <span><strong>Arrival:</strong> @Html.DisplayFor(Model => Model.Datum.arrival.airport) @Html.DisplayFor(Model => Model.Datum.arrival.scheduled)</span>
+                <span><strong>Arrival:</strong> @Html.DisplayFor(Model => Model.ArrivalAirport) @Html.DisplayFor(Model => Model.EstimatedArrival)</span>
             </div>
             <div class="row">
-                <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport): @Html.DisplayFor(Model => Model.duration) minutes</span>
+                <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.Airport): @Html.DisplayFor(Model => Model.duration) minutes</span>
             </div>
-            @if (Model.TSAWaitTimeOnArrival == null)
+            @if (ViewBag.TransitTime == null)
             {
-                <div class="row">
-                    <form asp-action="FlightInfo" method="post">
-                        <label for="WaitTimes"><strong>Select During Which Time To Arrive At</strong> @Html.DisplayFor(Model => Model.Datum.departure.airport):</label>
-                        <select name="waitTime" id="WaitTimes" value="@ViewBag.WaitTimes" onchange="myFunction()">
-                            @for (int i = 0; i < ViewBag.WaitTimes.Length; i++)
-                            {
-                                <option value="@ViewBag.WaitTimes[i].waittime">@ViewBag.WaitTimes[i].timeslot Wait Time: @ViewBag.WaitTimes[i].waittime minutes</option>
-                            }
-                        </select>
+                <form asp-action="FlightInfo" method="post">
+                    <div>
+                        <label for="time">Select Terminal Arrival Time:</label>
+                        <input type="time" name="time" id="time" />
                         <button type="submit" value="Submit" class="btn-primary">Submit</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             }
             else
+            {
+
+            }
+
+            @if (Model.TSAWaitTimeOnArrival != null)
             {
                 <div class="row">
                     <span><strong>Estimated Total Transit Time:</strong> @ViewBag.TransitTime minutes</span>
                 </div>
             }
 
-            </div>
+        </div>
     </div>
+    <script>
+        function currentTime() {
+            var date = new Date();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            var timeOfDay;
+            if (hour >= 12) {
+                timeOfDay = "PM"
+            }
+            else {
+                timeOfDay = "AM"
+            }
+            if (hour == 0) {
+                hour = 12;
+            }
+            if (min < 10) {
+                min = "0" + min;
+            }
+            if (sec < 10) {
+                sec = "0" + sec;
+            }
+            if (hour > 12) {
+                hour = hour - 12;
+            }
+
+            var time = hour + " : " + min + " : " + sec + " " + timeOfDay;
+            document.getElementById("clock").innerHTML = time;
+            var t = setTimeout(function () { currentTime() }, 1000);
+        }
+        currentTime();
+    </script>
