@@ -49,7 +49,7 @@ namespace Flight_Tracker.Models
         public Airport AirportTimes { get; set; }
         public string UserName { get; internal set; }
         public string Email { get; internal set; }
-        //public long EpochTime { get; set; }
+        public long EpochTime { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

@@ -47,12 +47,9 @@
     <div>
 
         <table id="tblData" class="table table-striped border">
-            <tr class="table-secondary">                
+            <tr class="table-secondary">              
                 <th>
                     Name
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.StreetAddress)
@@ -73,12 +70,12 @@
                     <td>
                         @Html.DisplayFor(modelitem => Model.ZipCode)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => Model.State)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => Model.ZipCode)
-                    </td>
+                    </td>*@
                     <td class="whiteSpace" colspan="1" width:5px">
                         <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                         <a asp-action="Details" class="btn btn-info" asp-route-id="@Model.Id"><i class="fas fa-search"></i></a>

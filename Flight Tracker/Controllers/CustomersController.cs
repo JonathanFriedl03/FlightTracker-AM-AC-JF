@@ -50,25 +50,24 @@ namespace Flight_Tracker.Controllers
                 customerToDisplay.FlightNumber = flightNumber.Trim();               
                 _repo.Customer.EditCustomer(customerToDisplay);
                 await _context.SaveChangesAsync();
-
             }       
             if (customerToDisplay == null)
             {    
-
                 return RedirectToAction("Create");
             }
             ViewBag.Check = customerToDisplay.FlightNumber;
             DataInfo info = new DataInfo();
             if (customerToDisplay.FlightNumber != null && customerToDisplay.FlightNumber != "" )
             {
-
                 info = await _flightService.GetArrivalInfo(customerToDisplay);
 
             }
             ViewBag.Flights = info.data;
             if(searchFlight != null)
+
             {               
                 return await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
+
             }
             return View(customerToDisplay);
         }
@@ -91,7 +90,7 @@ namespace Flight_Tracker.Controllers
             customer.ActualArrival = info.data[index].arrival.actual;
             customer.TSAWaitTimeOnArrival = null;
             TravelInfo travelInfo = await _directions.GetDirections(customer);
-            await SetDirectionsInfo(travelInfo, customer);
+             SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction("FlightInfo");
@@ -104,7 +103,6 @@ namespace Flight_Tracker.Controllers
             {
                 return NotFound();
             }
-
             var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
@@ -142,10 +140,9 @@ namespace Flight_Tracker.Controllers
             return RedirectToAction(nameof(Index)); ;
         }
 
-        public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
+        public void SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
         {
-
-            customer.duration = travelInfo.routes[0].legs[0].duration.value;
+            customer.duration = travelInfo.routes[0].legs[0].duration_in_traffic.value;
             customer.duration = customer.duration / 60;
             customer.distance = travelInfo.routes[0].legs[0].distance.value;
             customer.endLatitude = travelInfo.routes[0].legs[0].end_location.lat;
