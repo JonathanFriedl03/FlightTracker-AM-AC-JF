@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Flight_Tracker.Models
 {
+    
     public class Airport
     {
         public string code { get; set; }
@@ -62,7 +63,7 @@ namespace Flight_Tracker.Models
     public class Estimated_Hourly_Times
     {
         public string timeslot { get; set; }
-        public float waittime { get; set; }
+        public double waittime { get; set; }
     }
 
 }

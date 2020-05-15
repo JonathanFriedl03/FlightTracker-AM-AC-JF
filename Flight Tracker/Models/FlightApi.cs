@@ -27,8 +27,8 @@ namespace Flight_Tracker.Models
             public Arrival arrival { get; set; }
             public Airline airline { get; set; }
             public Flight flight { get; set; }
-            public object aircraft { get; set; }
-            public object live { get; set; }
+            public string aircraft { get; set; }
+            public string live { get; set; }
         }
 
         public class Departure
@@ -39,12 +39,12 @@ namespace Flight_Tracker.Models
             public string icao { get; set; }
             public string terminal { get; set; }
             public string gate { get; set; }
-            public int delay { get; set; }
+            public int? delay { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime estimated { get; set; }
             public DateTime? actual { get; set; }
-            public object estimated_runway { get; set; }
-            public object actual_runway { get; set; }
+            public string estimated_runway { get; set; }
+            public string actual_runway { get; set; }
         }
 
         public class Arrival
@@ -60,8 +60,8 @@ namespace Flight_Tracker.Models
             public DateTime scheduled { get; set; }
             public DateTime estimated { get; set; }
             public DateTime? actual { get; set; }
-            public object estimated_runway { get; set; }
-            public object actual_runway { get; set; }
+            public string estimated_runway { get; set; }
+            public string actual_runway { get; set; }
         }
 
         public class Airline
@@ -76,6 +76,6 @@ namespace Flight_Tracker.Models
             public string number { get; set; }
             public string iata { get; set; }
             public string icao { get; set; }
-            public object codeshared { get; set; }
+            public string codeshared { get; set; }
         } 
 }
