@@ -135,7 +135,7 @@ namespace Flight_Tracker.Controllers
         {
             //this is for converting future time to epoch time
             //var dt = new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-            //var future = new DateTime(2010, 1, 1).ToUniversalTime();
+            //var future = new DateTime(2020, 6, 1, ).ToUniversalTime();
             //Console.WriteLine((future - dt).TotalSeconds);
             customer.duration = travelInfo.routes[0].legs[0].duration_in_traffic.value;
             customer.duration = customer.duration / 60;
