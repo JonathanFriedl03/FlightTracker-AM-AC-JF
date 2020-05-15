@@ -25,7 +25,7 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class="col-sm-10">
+        @*<dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserName)
         </dd>
         <dt class="col-sm-2">
@@ -33,7 +33,7 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
-        </dd>
+        </dd>*@
     </dl>
 </div>
 <div>
@@ -41,23 +41,41 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <h2>Map</h2>
-<style>    
+<br />
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .column {
+        float: left;
+        width: 33.33%;
+        padding: 5px;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
     #map {
+        
         height: 400px;
         width: 700px;
     }
 </style>
 
 <div class="row">
-    <div id="right-panel"></div>
-    <div id="map"></div>
+    <div id="map" class="column"></div>
+    <div id="right-panel" class="column"></div>
     &nbsp;
     <div id="warnings-panel"></div>
     <script>
         function initMap() {
-            var markerArray = [];
+            @*var markerArray = [];
              var start = { lat:@Model.startLatitude, lng: @Model.startLongitude};
-                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};
+                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};*@
             var directionsRenderer = new google.maps.DirectionsRenderer;
             var directionsService = new google.maps.DirectionsService;
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -66,20 +84,20 @@
             });
             directionsRenderer.setMap(map);
             directionsRenderer.setPanel(document.getElementById('right-panel'));
-           
+
             var stepDisplay = new google.maps.InfoWindow;
-         
+
             calculateAndDisplayRoute(
-                directionsService, directionsRenderer);           
+                directionsService, directionsRenderer);
         }
         function calculateAndDisplayRoute(directionsService, directionsRenderer
             ) {var start = { lat:@Model.startLatitude, lng: @Model.startLongitude};
-                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};           
+                    var end = { lat:@Model.endLatitude, lng: @Model.endLongitude};
             directionsService.route({
                 origin: { lat:@Model.startLatitude, lng: @Model.startLongitude},
                 destination: { lat:@Model.endLatitude, lng: @Model.endLongitude},
-                travelMode: 'DRIVING'         
-            }, function (response, status) {               
+                travelMode: 'DRIVING'
+            }, function (response, status) {
                     if (status === 'OK') {
                         directionsRenderer.setDirections(response);
                     } else {
@@ -88,7 +106,7 @@
             });
         }
 
-        function showSteps(directionResult, markerArray, stepDisplay, map) {         
+        function showSteps(directionResult, markerArray, stepDisplay, map) {
             var myRoute = directionResult.routes[0].legs[0];
             for (var i = 0; i < myRoute.steps.length; i++) {
                 var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
@@ -100,13 +118,13 @@
         }
 
         function attachInstructionText(stepDisplay, marker, text, map) {
-            google.maps.event.addListener(marker, 'click', function () {                
+            google.maps.event.addListener(marker, 'click', function () {
                 stepDisplay.setContent(text);
                 stepDisplay.open(map, marker);
             });
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=&callback=initMap&libraries=directions"></script>
 </div>
    
 

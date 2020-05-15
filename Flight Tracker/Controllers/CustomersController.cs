@@ -53,27 +53,22 @@ namespace Flight_Tracker.Controllers
                 customerToDisplay.FlightDate = flightDate;
                 _repo.Customer.EditCustomer(customerToDisplay);
                 await _context.SaveChangesAsync();
-
             }       
             if (customerToDisplay == null)
             {    
-
                 return RedirectToAction("Create");
             }
             ViewBag.Check = customerToDisplay.FlightNumber;
             DataInfo info = new DataInfo();
             if (customerToDisplay.FlightNumber != null && customerToDisplay.FlightNumber != "" )
             {
-
                 info = await _flightService.GetArrivalInfo(customerToDisplay);
 
             }
             ViewBag.Flights = info.data;
             if(searchFlight != null)
             {
-
               await SetFlightInfo(info, customerToDisplay, Convert.ToInt32(searchFlight));
-
             }
             return View(customerToDisplay);
         }
@@ -88,10 +83,9 @@ namespace Flight_Tracker.Controllers
             customer.EstimatedDeparture = Info.data[index].departure.scheduled;
             customer.EstimatedArrival = Info.data[index].arrival.scheduled;
             TravelInfo travelInfo = await _directions.GetDirections(customer);
-            await SetDirectionsInfo(travelInfo, customer);
+             SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
-
         }
 
         // GET: Customers/Details/5
@@ -101,7 +95,6 @@ namespace Flight_Tracker.Controllers
             {
                 return NotFound();
             }
-
             var customer = _repo.Customer.GetCustomer(id);
             if (customer == null)
             {
@@ -129,26 +122,22 @@ namespace Flight_Tracker.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
-
-                //make directions api call
-
-              
+                //make directions api call              
                 _repo.Customer.CreateCustomer(customer);            
-                await _context.SaveChangesAsync();
-
-                
-                
-               
-
+                await _context.SaveChangesAsync();           
+                             
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             return RedirectToAction(nameof(Index)); ;
         }
 
-        public async Task SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
+        public void SetDirectionsInfo(TravelInfo travelInfo, Customer customer)
         {
-
-            customer.duration = travelInfo.routes[0].legs[0].duration.value;
+            //this is for converting future time to epoch time
+            //var dt = new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+            //var future = new DateTime(2010, 1, 1).ToUniversalTime();
+            //Console.WriteLine((future - dt).TotalSeconds);
+            customer.duration = travelInfo.routes[0].legs[0].duration_in_traffic.value;
             customer.duration = customer.duration / 60;
             customer.distance = travelInfo.routes[0].legs[0].distance.value;
             customer.endLatitude = travelInfo.routes[0].legs[0].end_location.lat;
