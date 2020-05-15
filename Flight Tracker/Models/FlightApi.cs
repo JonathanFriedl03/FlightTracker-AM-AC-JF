@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,9 +20,10 @@ namespace Flight_Tracker.Models
             public int count { get; set; }
             public int total { get; set; }
         }
-
         public class Datum
         {
+            [Key]
+            public int Id { get; set; }
             public string flight_date { get; set; }
             public string flight_status { get; set; }
             public Departure departure { get; set; }
@@ -30,9 +33,10 @@ namespace Flight_Tracker.Models
             public string aircraft { get; set; }
             public string live { get; set; }
         }
-
         public class Departure
         {
+            [Key]
+            public int Id { get; set; }
             public string airport { get; set; }
             public string timezone { get; set; }
             public string iata { get; set; }
@@ -49,6 +53,8 @@ namespace Flight_Tracker.Models
 
         public class Arrival
         {
+            [Key]
+            public int Id { get; set; }
             public string airport { get; set; }
             public string timezone { get; set; }
             public string iata { get; set; }
@@ -63,9 +69,10 @@ namespace Flight_Tracker.Models
             public string estimated_runway { get; set; }
             public string actual_runway { get; set; }
         }
-
         public class Airline
         {
+            [Key]
+            public int Id { get; set; } 
             public string name { get; set; }
             public string iata { get; set; }
             public string icao { get; set; }
@@ -73,6 +80,8 @@ namespace Flight_Tracker.Models
 
         public class Flight
         {
+            [Key]
+            public int Id { get; set; }
             public string number { get; set; }
             public string iata { get; set; }
             public string icao { get; set; }
