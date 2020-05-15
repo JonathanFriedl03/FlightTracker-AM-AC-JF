@@ -39,7 +39,7 @@ namespace Flight_Tracker.Models
         public DateTime? ActualDeparture { get; set; }
         public DateTime? EstimatedArrival { get; set; }
         public DateTime? ActualArrival { get; set; }
-        public DateTime? LeaveBy { get; set; }
+        
 
         public IEnumerable<Contact> Contacts { get; set; }
         public string UserName { get; internal set; }
