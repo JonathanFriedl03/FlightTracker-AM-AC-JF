@@ -7,15 +7,15 @@
         color: black;
         font-size: 56px;
         text-align: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
     #timeDisplay {
         color: black;
         font-size: 56px;
         text-align: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 
     * {
@@ -27,8 +27,6 @@
         width: 33.33%;
         padding: 5px;
     }
-
-    /* Clearfix (clear floats) */
     .row::after {
         content: "";
         clear: both;
@@ -55,16 +53,21 @@
         </div>
     </div>
     <br />
+    <center><h2>Current Time</h2></center>
     <div id="clock"></div>
+    <center><h2>Time to Leave for the Airport</h2></center>
     <div id="timeDisplay">@ViewBag.LeaveTime</div>
-    <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arriavl Time</button>
+    <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arrival Time</button>
     <form asp-action="FlightInfo" method="post" id="time" style="display:none;">
         <div>
-            <input name="time" type="time" class="col-form-label"  />
+            <input name="time" type="time" class="col-form-label" />
             <button type="submit" value="Submit" class="btn btn-success">Submit</button>
         </div>
     </form>
     <div class="container">
+        <div class="row">
+            <span><strong>Selected Terminal Arrival Time</strong>@Html.DisplayFor(Model => Model.Customer.SelectedArrivalTime)</span>
+        </div>
         <div class="row">
             <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport) @Html.DisplayFor(Model => Model.FlightInfo.EstimatedDeparture)</span>
         </div>
@@ -75,10 +78,16 @@
             <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport): @Html.DisplayFor(Model => Model.Customer.duration) minutes</span>
         </div>
 
-        @if (Model.Customer.TSAWaitTimeOnArrival != null)
+        @if (ViewBag.TransitTIme != null)
         {
             <div class="row">
-                <span><strong>Estimated Total Transit Time:</strong> @ViewBag.TransitTime minutes</span>
+                <span><strong>Estimated Total Time To Reach Terminal:</strong> @ViewBag.TransitTime minutes</span>
+            </div>
+        }
+        else
+        {
+            <div class="row" style="display: none;">
+                <span><strong>Estimated Total Time To Reach Terminal:</strong> @ViewBag.TransitTime minutes</span>
             </div>
         }
 
@@ -110,7 +119,7 @@
             hour = hour - 12;
         }
 
-        var time = hour + " : " + min + " : " + sec + " " + timeOfDay;
+        var time = hour + ":" + min + ":" + sec + " " + timeOfDay;
         document.getElementById("clock").innerHTML = time;
         var t = setTimeout(function () { currentTime() }, 1000);
     }

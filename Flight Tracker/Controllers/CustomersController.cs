@@ -270,18 +270,19 @@ namespace Flight_Tracker.Controllers
             string firstTimeSlot = airport.estimated_hourly_times[0].timeslot;
             char firstChar = firstTimeSlot[0];
             int firstTime = Convert.ToInt32(Char.GetNumericValue(firstChar));
-            string lastTimeSlot = airport.estimated_hourly_times.[airport.estimated_hourly_times.Length - 1].
             double? transitMins;
+            bool withinTime;
             if (customer.SelectedArrivalTime.HasValue || time.HasValue)
             {
+                if (customer.SelectedArrivalTime.Value.Hours < firstTime || customer.SelectedArrivalTime.Value.Hours > airport.estimated_hourly_times.Length)
+                {
+                    withinTime = true;
+                    return View(customerFlight);
+                }
                 for (int i = firstTime; i < airport.estimated_hourly_times.Length; i++)
                 {
                     TimeSpan start = new TimeSpan(i, 0, 0);
                     TimeSpan end = new TimeSpan((i + 1), 0, 0);
-                    if (customer.SelectedArrivalTime.Value.Hours < )
-                    {
-
-                    }
                     if ((customer.SelectedArrivalTime >= start) && (customer.SelectedArrivalTime <= end))
                     {
                         customer.TSAWaitTimeOnArrival = airport.estimated_hourly_times[i].waittime;
