@@ -48,24 +48,19 @@ namespace Flight_Tracker.Controllers
             {
                 return RedirectToAction("Create");
             }
-            var flights = _repo.Flight.GetFlights(customerToDisplay.Id);
             FlightInfo flight = new FlightInfo();
             CustomerFlightInfoViewModel customerFlight = new CustomerFlightInfoViewModel();
-           
             if (flightNumber != null)
             {
                 flight.CustomerId = customerToDisplay.Id;
                 flight.FlightNumber = flightNumber;
                 _repo.Flight.CreateFlight(flight);
                 await _context.SaveChangesAsync();
-            }       
+            }
+            var flights = _repo.Flight.GetFlights(customerToDisplay.Id);
             ViewBag.Check = flight.FlightNumber;
             DataInfo info = new DataInfo();
-            if (flightNumber != null && flight.FlightNumber !=null)
-            {
-                info = await _flightService.GetArrivalInfo(flight);
-            }
-            else if(flights.Count != 0)
+            if (flights[flights.Count - 1].Airport == null || searchFlight != null)
             {
                 info = await _flightService.GetArrivalInfo(flights[flights.Count - 1]);
             }
@@ -73,14 +68,14 @@ namespace Flight_Tracker.Controllers
             customerFlight.Customer = customerToDisplay;
             customerFlight.Flights = flights;
             if (searchFlight != null)
-            {               
-                return await SetFlightInfo(info, customerToDisplay,flights[flights.Count-1], Convert.ToInt32(searchFlight));
+            {
+                return await SetFlightInfo(info, customerToDisplay, flights[flights.Count - 1], Convert.ToInt32(searchFlight));
             }
             return View(customerFlight);
         }
         public async Task<IActionResult> SetFlightInfo(DataInfo info, Customer customer, FlightInfo flightInfo, int index)
         {
-            
+
             flightInfo.Airport = info.data[index].departure.airport;
             flightInfo.ArrivalAirport = info.data[index].arrival.airport;
             flightInfo.Airline = info.data[index].airline.name;
@@ -97,7 +92,7 @@ namespace Flight_Tracker.Controllers
             DateTimeOffset? dateTime = flightInfo.EstimatedDeparture;
             customer.EpochTime = dateTime.Value.ToUnixTimeSeconds();
             TravelInfo travelInfo = await _directions.GetDirections(customer, flightInfo);
-             SetDirectionsInfo(travelInfo, customer);
+            SetDirectionsInfo(travelInfo, customer);
             _repo.Flight.EditFlight(flightInfo);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
@@ -140,7 +135,7 @@ namespace Flight_Tracker.Controllers
                 customer.IdentityUserId = userId;
 
                 //make directions api call
-                _repo.Customer.CreateCustomer(customer);            
+                _repo.Customer.CreateCustomer(customer);
                 await _context.SaveChangesAsync();
 
             }
@@ -254,7 +249,7 @@ namespace Flight_Tracker.Controllers
             }
         }
         public async Task<IActionResult> FlightInfo(TimeSpan? time, int flightId)
-        {    
+        {
             CustomerFlightInfoViewModel customerFlight = new CustomerFlightInfoViewModel();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customer = _repo.Customer.GetCustomer(userId);
@@ -263,23 +258,31 @@ namespace Flight_Tracker.Controllers
                 customer.flightId = flightId;
             }
             var flight = _repo.Flight.GetFlight(customer.flightId);
-            customer.SelectedArrivalTime = time;
+            if (time != null)
+            {
+                customer.SelectedArrivalTime = time;
+            }
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
             customerFlight.Customer = customer;
             customerFlight.FlightInfo = flight;
-            if (customer.SelectedArrivalTime == null)
+            Airport airport = await _tsaWaitTimesService.GetWaitTimes(flight.AirportCode);
+            string firstTimeSlot = airport.estimated_hourly_times[0].timeslot;
+            char firstChar = firstTimeSlot[0];
+            int firstTime = Convert.ToInt32(Char.GetNumericValue(firstChar));
+            string lastTimeSlot = airport.estimated_hourly_times.[airport.estimated_hourly_times.Length - 1].
+            double? transitMins;
+            if (customer.SelectedArrivalTime.HasValue || time.HasValue)
             {
-                return View(customerFlight);
-            }
-            else if (customer.TSAWaitTimeOnArrival == null)
-            {               
-                Airport airport = await _tsaWaitTimesService.GetWaitTimes(flight.AirportCode);
-                for (int i = 0; i < 24; i++)
+                for (int i = firstTime; i < airport.estimated_hourly_times.Length; i++)
                 {
                     TimeSpan start = new TimeSpan(i, 0, 0);
                     TimeSpan end = new TimeSpan((i + 1), 0, 0);
-                    if ((time > start) && (time <= end))
+                    if (customer.SelectedArrivalTime.Value.Hours < )
+                    {
+
+                    }
+                    if ((customer.SelectedArrivalTime >= start) && (customer.SelectedArrivalTime <= end))
                     {
                         customer.TSAWaitTimeOnArrival = airport.estimated_hourly_times[i].waittime;
                         break;
@@ -287,18 +290,36 @@ namespace Flight_Tracker.Controllers
                 }
                 _repo.Customer.EditCustomer(customer);
                 await _context.SaveChangesAsync();
-                ViewBag.TransitTime = customer.duration + customer.TSAWaitTimeOnArrival;
-                return View(customerFlight);
+                transitMins = customer.duration + customer.TSAWaitTimeOnArrival;
+                ViewBag.TransitTime = transitMins;
+                string leaveTime = ConvertTime(transitMins, customer);
+                ViewBag.LeaveTime = leaveTime;
+            }
+            return View(customerFlight);
+        }
+        public string ConvertTime(double? mins, Customer customer)
+        {
+            TimeSpan conTime = TimeSpan.FromMinutes(mins.Value);
+            TimeSpan arrivalTime = new TimeSpan(customer.SelectedArrivalTime.Value.Hours, customer.SelectedArrivalTime.Value.Minutes, customer.SelectedArrivalTime.Value.Seconds);
+            TimeSpan transitTime = new TimeSpan(conTime.Hours, conTime.Minutes, conTime.Seconds);
+            TimeSpan leaveTime = arrivalTime.Subtract(transitTime).Duration();
+            string AmPm;
+            if(leaveTime.Hours > 12)
+            {
+                AmPm = "PM";
             }
             else
             {
-                ViewBag.TransitTime = customer.duration + customer.TSAWaitTimeOnArrival;
-                return View(customerFlight);
+                AmPm = "AM";
             }
+            string time = $"{leaveTime.ToString()} {AmPm}";
+            return time;
         }
-       
-       
     }
+    
 }
+
+       
+      
 
 

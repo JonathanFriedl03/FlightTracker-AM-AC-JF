@@ -10,6 +10,14 @@
         padding-top: 40px;
         padding-bottom: 40px;
     }
+    #timeDisplay {
+        color: black;
+        font-size: 56px;
+        text-align: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
     * {
         box-sizing: border-box;
     }
@@ -31,6 +39,12 @@
         height: 400px;
         width: 700px;
     }
+    #time{
+        margin-top: 10px;
+    }
+    #selectTime {
+        margin-top: 10px;
+    }
 </style>
 <br />
 <div class="border backgroundWhite">
@@ -42,6 +56,14 @@
     </div>
     <br />
     <div id="clock"></div>
+    <div id="timeDisplay">@ViewBag.LeaveTime</div>
+    <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arriavl Time</button>
+    <form asp-action="FlightInfo" method="post" id="time" style="display:none;">
+        <div>
+            <input name="time" type="time" class="col-form-label"  />
+            <button type="submit" value="Submit" class="btn btn-success">Submit</button>
+        </div>
+    </form>
     <div class="container">
         <div class="row">
             <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport) @Html.DisplayFor(Model => Model.FlightInfo.EstimatedDeparture)</span>
@@ -52,20 +74,6 @@
         <div class="row">
             <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport): @Html.DisplayFor(Model => Model.Customer.duration) minutes</span>
         </div>
-        @if (ViewBag.TransitTime == null)
-        {
-            <form asp-action="FlightInfo" method="post">
-                <div>
-                    <label for="time">Select Terminal Arrival Time:</label>
-                    <input type="time" name="time" id="time" />
-                    <button type="submit" value="Submit" class="btn-primary">Submit</button>
-                </div>
-            </form>
-        }
-        else
-        {
-
-        }
 
         @if (Model.Customer.TSAWaitTimeOnArrival != null)
         {
@@ -107,6 +115,22 @@
         var t = setTimeout(function () { currentTime() }, 1000);
     }
     currentTime();
+   function showTimeInput() {
+        var x = document.getElementById("time")
+        var z = document.getElementById("selectTime")
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            z.style.marginBottom = "0px";
+        }
+        else {
+            x.style.display = "none";
+            z.style.marginBottom = "10px";
+        }
+    }
+    window.onload = function () {
+        var z = document.getElementById("selectTime")
+        z.style.marginBottom = "10px";
+    }
 </script>
 <h2>Map</h2>
 <br />
