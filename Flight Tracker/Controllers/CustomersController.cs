@@ -91,8 +91,6 @@ namespace Flight_Tracker.Controllers
             customer.TSAWaitTimeOnArrival = null;
             DateTimeOffset? dateTime = flightInfo.EstimatedDeparture;
             customer.EpochTime = dateTime.Value.ToUnixTimeSeconds();
-            TravelInfo travelInfo = await _directions.GetDirections(customer, flightInfo);
-            SetDirectionsInfo(travelInfo, customer);
             _repo.Flight.EditFlight(flightInfo);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
@@ -262,6 +260,8 @@ namespace Flight_Tracker.Controllers
             {
                 customer.SelectedArrivalTime = time;
             }
+            TravelInfo travelInfo = await _directions.GetDirections(customer, flight);
+            SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
             customerFlight.Customer = customer;
@@ -293,28 +293,27 @@ namespace Flight_Tracker.Controllers
                 await _context.SaveChangesAsync();
                 transitMins = customer.duration + customer.TSAWaitTimeOnArrival;
                 ViewBag.TransitTime = transitMins;
-                string leaveTime = ConvertTime(transitMins, customer);
-                ViewBag.LeaveTime = leaveTime;
+                DateTime leaveTime = ConvertTime(transitMins, customer);
+                string dateToDisplay = leaveTime.ToShortDateString();
+                string timeToDisplay = leaveTime.ToString("hh:mm:ss tt");
+                ViewBag.LeaveTime = $"{dateToDisplay} {timeToDisplay}";
             }
             return View(customerFlight);
         }
-        public string ConvertTime(double? mins, Customer customer)
+        //public DateTime CalculateDate(Customer customer, DateTime leavetime)
+        //{
+        //    DateTime time = DateTime.Today.Add(customer.SelectedArrivalTime.Value);
+        //    DateTime leaveDate = leavetime
+
+        //}
+        public DateTime ConvertTime(double? mins, Customer customer)
         {
             TimeSpan conTime = TimeSpan.FromMinutes(mins.Value);
             TimeSpan arrivalTime = new TimeSpan(customer.SelectedArrivalTime.Value.Hours, customer.SelectedArrivalTime.Value.Minutes, customer.SelectedArrivalTime.Value.Seconds);
-            TimeSpan transitTime = new TimeSpan(conTime.Hours, conTime.Minutes, conTime.Seconds);
-            TimeSpan leaveTime = arrivalTime.Subtract(transitTime).Duration();
-            string AmPm;
-            if(leaveTime.Hours > 12)
-            {
-                AmPm = "PM";
-            }
-            else
-            {
-                AmPm = "AM";
-            }
-            string time = $"{leaveTime.ToString()} {AmPm}";
-            return time;
+            TimeSpan transitTime = new TimeSpan(conTime.Hours, conTime.Minutes, conTime.Seconds).Duration();
+            DateTime time = DateTime.Today.Add(arrivalTime);
+            DateTime value = time.Subtract(transitTime);
+            return value;
         }
     }
     

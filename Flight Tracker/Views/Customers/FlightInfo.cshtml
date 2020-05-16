@@ -55,8 +55,20 @@
     <br />
     <center><h2>Current Time</h2></center>
     <div id="clock"></div>
-    <center><h2>Time to Leave for the Airport</h2></center>
-    <div id="timeDisplay">@ViewBag.LeaveTime</div>
+    @if (ViewBag.TransitTIme != null)
+    {
+        <div>
+            <center><h2>Time to Leave for @Html.DisplayFor(Model => Model.FlightInfo.Airport)</h2></center>
+            <div id="timeDisplay">@ViewBag.LeaveTime</div>
+        </div>
+    }
+    else
+    {
+        <div style="display:none;">
+            <center><h2>Time to Leave for the Airport</h2></center>
+            <div id="timeDisplay">@ViewBag.LeaveTime</div>
+        </div>
+    }
     <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arrival Time</button>
     <form asp-action="FlightInfo" method="post" id="time" style="display:none;">
         <div>
@@ -65,9 +77,21 @@
         </div>
     </form>
     <div class="container">
-        <div class="row">
-            <span><strong>Selected Terminal Arrival Time</strong>@Html.DisplayFor(Model => Model.Customer.SelectedArrivalTime)</span>
-        </div>
+        @if (Model.Customer.SelectedArrivalTime != null)
+        {
+            DateTime time = DateTime.Today.Add(Model.Customer.SelectedArrivalTime.Value);
+            string displayTime = time.ToString("hh:mm tt");
+            <div class="row">
+                <span><strong>Selected Terminal Arrival Time:</strong> @displayTime</span>
+            </div>
+        }
+        else
+        {
+            <div class="row" style="display:none;">
+                <span><strong>Selected Terminal Arrival Time:</strong>uhhhhh</span>
+            </div>
+        }
+
         <div class="row">
             <span><strong>Departure:</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport) @Html.DisplayFor(Model => Model.FlightInfo.EstimatedDeparture)</span>
         </div>
@@ -96,6 +120,9 @@
 <script>
     function currentTime() {
         var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
         var hour = date.getHours();
         var min = date.getMinutes();
         var sec = date.getSeconds();
@@ -119,7 +146,7 @@
             hour = hour - 12;
         }
 
-        var time = hour + ":" + min + ":" + sec + " " + timeOfDay;
+        var time = month + "/" + day + "/" + year + "  " + hour + ":" + min + ":" + sec + " " + timeOfDay;
         document.getElementById("clock").innerHTML = time;
         var t = setTimeout(function () { currentTime() }, 1000);
     }
