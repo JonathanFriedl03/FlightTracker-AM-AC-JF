@@ -22,6 +22,14 @@
                 <button type="submit" value="Submit" class="btn btn-primary">Search</button>
             </div>
         </form>
+        @if (ViewBag.FlightNum != null & ViewBag.Check == null)
+        {
+            <div style="color:red;">No Flights Were Found</div>
+        }
+        else
+        {
+            <div style="color:red; display:none;">No Flights Were Found</div>
+        }
         <div>
             @if (ViewBag.Check != null && ViewBag.Check != "")
             {

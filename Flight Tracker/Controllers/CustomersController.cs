@@ -42,6 +42,7 @@ namespace Flight_Tracker.Controllers
         // GET: Customers
         public async Task<IActionResult> Index(string flightNumber, string searchFlight)
         {
+            DataInfo info = new DataInfo();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var customerToDisplay = _repo.Customer.GetCustomer(userId);
             if (customerToDisplay == null)
@@ -52,24 +53,24 @@ namespace Flight_Tracker.Controllers
             CustomerFlightInfoViewModel customerFlight = new CustomerFlightInfoViewModel();
             if (flightNumber != null)
             {
-                if ()
+                flightNumber = RemoveSpaces(flightNumber);
+                info = await _flightService.GetArrivalInfo(flightNumber);
+                if (info.data.Length != 0)
                 {
-
+                    flight.CustomerId = customerToDisplay.Id;
+                    flight.FlightNumber = flightNumber;
+                    _repo.Flight.CreateFlight(flight);
+                    await _context.SaveChangesAsync();
                 }
-                info = await _flightService.GetArrivalInfo(flights[flights.Count - 1]);
-                flight.CustomerId = customerToDisplay.Id;
-                flight.FlightNumber = flightNumber;
-                _repo.Flight.CreateFlight(flight);
-                await _context.SaveChangesAsync();
             }
             var flights = _repo.Flight.GetFlights(customerToDisplay.Id);
+            ViewBag.FlightNum = flightNumber;
             ViewBag.Check = flight.FlightNumber;
-            DataInfo info = new DataInfo();
             if(flights.Count != 0)
             {
                 if (flights[flights.Count - 1].Airport == null || searchFlight != null)
                 {
-                    info = await _flightService.GetArrivalInfo(flights[flights.Count - 1]);
+                    info = await _flightService.GetArrivalInfo(flights[flights.Count - 1].FlightNumber);
                 }
             }
             ViewBag.Flights = info.data;
@@ -80,6 +81,11 @@ namespace Flight_Tracker.Controllers
                 return await SetFlightInfo(info, customerToDisplay, flights[flights.Count - 1], Convert.ToInt32(searchFlight));
             }
             return View(customerFlight);
+        }
+        public string RemoveSpaces(string flightNum)
+        {
+            string formattedString = flightNum.Replace(" ", String.Empty);
+            return formattedString;
         }
         public async Task<IActionResult> SetFlightInfo(DataInfo info, Customer customer, FlightInfo flightInfo, int index)
         {
@@ -102,8 +108,7 @@ namespace Flight_Tracker.Controllers
             {
                 flightInfo.ActualArrival = info.data[index].arrival.actual.Value.Add(hours);
             }
-            DateTimeOffset? dateTime = flightInfo.EstimatedDeparture;
-            customer.EpochTime = dateTime.Value.ToUnixTimeSeconds();
+            
             _repo.Flight.EditFlight(flightInfo);
             _repo.Customer.EditCustomer(customer);
             await _context.SaveChangesAsync();
@@ -163,6 +168,8 @@ namespace Flight_Tracker.Controllers
             customer.endLongitude = travelInfo.routes[0].legs[0].end_location.lng;
             customer.startLatitude = travelInfo.routes[0].legs[0].start_location.lat;
             customer.startLongitude = travelInfo.routes[0].legs[0].start_location.lng;
+            _repo.Customer.EditCustomer(customer);
+            _context.SaveChangesAsync();
         }
 
         // GET: Customers/Edit/5
@@ -273,8 +280,6 @@ namespace Flight_Tracker.Controllers
             {
                 flight.SelectedArrivalTime = time;
             }
-            TravelInfo travelInfo = await _directions.GetDirections(customer, flight);
-            SetDirectionsInfo(travelInfo, customer);
             _repo.Customer.EditCustomer(customer);
             _repo.Flight.EditFlight(flight);
             await _context.SaveChangesAsync();
@@ -306,6 +311,9 @@ namespace Flight_Tracker.Controllers
                 }
                 _repo.Flight.EditFlight(flight);
                 await _context.SaveChangesAsync();
+                EpochTimeConverter(flight);
+                TravelInfo travelInfo = await _directions.GetDirections(customer, flight);
+                SetDirectionsInfo(travelInfo, customer);
                 transitMins = customer.duration + flight.TSAWaitTimeOnArrival;
                 ViewBag.TransitTime = transitMins;
                 DateTime leaveTime = ConvertTime(transitMins, flight);
@@ -314,6 +322,14 @@ namespace Flight_Tracker.Controllers
                 ViewBag.LeaveTime = $"{dateToDisplay} {timeToDisplay}";
             }
             return View(customerFlight);
+        }
+        public void EpochTimeConverter(FlightInfo flight)
+        {
+            DateTimeOffset date = flight.EstimatedDeparture.Value.Date;
+            DateTimeOffset timeOffset = date.Add(flight.SelectedArrivalTime.Value);
+            flight.EpochTime = timeOffset.ToUnixTimeSeconds();
+            _repo.Flight.EditFlight(flight);
+            _context.SaveChangesAsync();
         }
         public DateTime ConvertTime(double? mins, FlightInfo flight)
         {
