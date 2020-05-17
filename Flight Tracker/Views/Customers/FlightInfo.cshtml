@@ -43,6 +43,13 @@
     #selectTime {
         margin-top: 10px;
     }
+    #right-panel {
+        padding: 15px;
+        width: 37%;
+        height: 415px;
+        overflow: scroll;
+        border: 1px solid #ccc;
+    }
 </style>
 <br />
 <div class="border backgroundWhite">
@@ -64,10 +71,18 @@
     }
     else
     {
-        <div style="display:none;">
+        <div style="display: none;">
             <center><h2>Time to Leave for the Airport</h2></center>
             <div id="timeDisplay">@ViewBag.LeaveTime</div>
         </div>
+    }
+    @if (ViewBag.TimeCheck == true)
+    {
+        <div style="color:red;">Your Selected Arrival Time is Not Within Range of TSA Timeslots</div>
+    }
+    else
+    {
+        <div style="color:red; display:none;">Your Selected Arrival Time is Not Within Range of TSA Timeslots</div>
     }
     <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arrival Time</button>
     <form asp-action="FlightInfo" method="post" id="time" style="display:none;">
@@ -77,9 +92,9 @@
         </div>
     </form>
     <div class="container">
-        @if (Model.Customer.SelectedArrivalTime != null)
+        @if (Model.FlightInfo.SelectedArrivalTime != null)
         {
-            DateTime time = DateTime.Today.Add(Model.Customer.SelectedArrivalTime.Value);
+            DateTime time = DateTime.Today.Add(Model.FlightInfo.SelectedArrivalTime.Value);
             string displayTime = time.ToString("hh:mm tt");
             <div class="row">
                 <span><strong>Selected Terminal Arrival Time:</strong> @displayTime</span>
@@ -187,14 +202,12 @@
             directionsRenderer.setMap(map);
             directionsRenderer.setPanel(document.getElementById('right-panel'));
 
-            var stepDisplay = new google.maps.InfoWindow;
+            //var stepDisplay = new google.maps.InfoWindow;
 
-            calculateAndDisplayRoute(
-                directionsService, directionsRenderer);
+            calculateAndDisplayRoute( directionsService, directionsRenderer);
         }
         function calculateAndDisplayRoute(directionsService, directionsRenderer
-            ) {var start = { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude};
-                    var end = { lat:@Model.Customer.endLatitude, lng: @Model.Customer.endLongitude};
+            ) {
             directionsService.route({
                 origin: { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude},
                 destination: { lat:@Model.Customer.endLatitude, lng: @Model.Customer.endLongitude},

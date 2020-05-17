@@ -29,9 +29,7 @@ namespace Flight_Tracker.Models
         public int? duration { get; set; }
         [Display(Name = "Airport Name")]
 
-        public IEnumerable<Contact> Contacts { get; set; }
-        public TimeSpan? SelectedArrivalTime { get; set; }
-        public double? TSAWaitTimeOnArrival { get; set; }
+        public IEnumerable<Contact> Contacts { get; set; }       
         public string UserName { get; internal set; }
         public string Email { get; internal set; }
         public long EpochTime { get; set; }
