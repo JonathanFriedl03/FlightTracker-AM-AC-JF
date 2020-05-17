@@ -60,10 +60,14 @@ namespace Flight_Tracker.Controllers
             var flights = _repo.Flight.GetFlights(customerToDisplay.Id);
             ViewBag.Check = flight.FlightNumber;
             DataInfo info = new DataInfo();
-            if (flights[flights.Count - 1].Airport == null || searchFlight != null)
+            if(flights.Count != 0)
             {
-                info = await _flightService.GetArrivalInfo(flights[flights.Count - 1]);
+                if (flights[flights.Count - 1].Airport == null || searchFlight != null)
+                {
+                    info = await _flightService.GetArrivalInfo(flights[flights.Count - 1]);
+                }
             }
+
             ViewBag.Flights = info.data;
             customerFlight.Customer = customerToDisplay;
             customerFlight.Flights = flights;

@@ -208,23 +208,23 @@
             });
         }
 
-        function showSteps(directionResult, markerArray, stepDisplay, map) {
-            var myRoute = directionResult.routes[0].legs[0];
-            for (var i = 0; i < myRoute.steps.length; i++) {
-                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-                marker.setMap(map);
-                marker.setPosition(myRoute.steps[i].start_location);
-                attachInstructionText(
-                    stepDisplay, marker, myRoute.steps[i].instructions, map);
-            }
-        }
+        //function showSteps(directionResult, markerArray, stepDisplay, map) {
+        //    var myRoute = directionResult.routes[0].legs[0];
+        //    for (var i = 0; i < myRoute.steps.length; i++) {
+        //        var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+        //        marker.setMap(map);
+        //        marker.setPosition(myRoute.steps[i].start_location);
+        //        attachInstructionText(
+        //            stepDisplay, marker, myRoute.steps[i].instructions, map);
+        //    }
+        //}
 
-        function attachInstructionText(stepDisplay, marker, text, map) {
-            google.maps.event.addListener(marker, 'click', function () {
-                stepDisplay.setContent(text);
-                stepDisplay.open(map, marker);
-            });
-        }
+        //function attachInstructionText(stepDisplay, marker, text, map) {
+        //    google.maps.event.addListener(marker, 'click', function () {
+        //        stepDisplay.setContent(text);
+        //        stepDisplay.open(map, marker);
+        //    });
+        //}
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=&callback=initMap&libraries=directions"></script>
 </div>
