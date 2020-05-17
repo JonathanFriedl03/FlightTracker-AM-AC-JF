@@ -8,19 +8,19 @@
 <div class="text-center">
     <h1 class="display-4">Let us get you to the Airport On Time! </h1>
     <div class="container">
-        <div class="carousel slide" data-ride="carousel">
+        <div id="carousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-                <li data-slide-to="0" class="active"></li>
-                <li data-slide-to="1"></li>
-                <li data-slide-to="2"></li>
-                <li data-slide-to="3"></li>
-                <li data-slide-to="4"></li>
-                <li data-slide-to="5"></li>
-                <li data-slide-to="6"></li>
-                <li data-slide-to="7"></li>
-                <li data-slide-to="8"></li>
-                <li data-slide-to="9"></li>
-               
+                <li data-target="#carousel" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel" data-slide-to="1"></li>
+                <li data-target="#carousel" data-slide-to="2"></li>
+                <li data-target="#carousel" data-slide-to="3"></li>
+                <li data-target="#carousel" data-slide-to="4"></li>
+                <li data-target="#carousel" data-slide-to="5"></li>
+                <li data-target="#carousel" data-slide-to="6"></li>
+                <li data-target="#carousel" data-slide-to="7"></li>
+                <li data-target="#carousel" data-slide-to="8"></li>
+                <li data-target="#carousel" data-slide-to="9"></li>
+
             </ol>
             <div class="carousel-inner">
                 <div class="item active">
@@ -48,6 +48,18 @@
                 </div>
             </div>
         </div>
+        @*<a href="carousel" class="left carousel-control" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a href="carousel" class="right carousel-control" data-slide="next">
+            <span class="icon-next"></span>
+        </a>*@
+        <script>
+            $("#carousel").carousel(
+                {
+                    interval: 3000
+                });
+        </script>
     </div>
 
 </div>
