@@ -43,11 +43,17 @@
     #selectTime {
         margin-top: 10px;
     }
+    #right-panel {
+        padding: 15px;
+        width: 37%;
+        height: 415px;
+        overflow: scroll;
+        border: 1px solid #ccc;
+    }
 </style>
 <br />
 <div class="border backgroundWhite">
     <div class="row">
-        @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
         <div class="col-6">
             <h2>@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
         </div>
@@ -64,7 +70,7 @@
     }
     else
     {
-        <div style="display:none;">
+        <div style="display: none;">
             <center><h2>Time to Leave for the Airport</h2></center>
             <div id="timeDisplay">@ViewBag.LeaveTime</div>
         </div>
@@ -195,14 +201,10 @@
             directionsRenderer.setMap(map);
             directionsRenderer.setPanel(document.getElementById('right-panel'));
 
-            var stepDisplay = new google.maps.InfoWindow;
-
-            calculateAndDisplayRoute(
-                directionsService, directionsRenderer);
+            calculateAndDisplayRoute( directionsService, directionsRenderer);
         }
         function calculateAndDisplayRoute(directionsService, directionsRenderer
-            ) {var start = { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude};
-                    var end = { lat:@Model.Customer.endLatitude, lng: @Model.Customer.endLongitude};
+            ) {
             directionsService.route({
                 origin: { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude},
                 destination: { lat:@Model.Customer.endLatitude, lng: @Model.Customer.endLongitude},
@@ -215,24 +217,6 @@
                     }
             });
         }
-
-        function showSteps(directionResult, markerArray, stepDisplay, map) {
-            var myRoute = directionResult.routes[0].legs[0];
-            for (var i = 0; i < myRoute.steps.length; i++) {
-                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-                marker.setMap(map);
-                marker.setPosition(myRoute.steps[i].start_location);
-                attachInstructionText(
-                    stepDisplay, marker, myRoute.steps[i].instructions, map);
-            }
-        }
-
-        function attachInstructionText(stepDisplay, marker, text, map) {
-            google.maps.event.addListener(marker, 'click', function () {
-                stepDisplay.setContent(text);
-                stepDisplay.open(map, marker);
-            });
-        }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=&callback=initMap&libraries=directions"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
 </div>

@@ -73,6 +73,7 @@ namespace Flight_Tracker.Controllers
                     info = await _flightService.GetArrivalInfo(flights[flights.Count - 1].FlightNumber);
                 }
             }
+
             ViewBag.Flights = info.data;
             customerFlight.Customer = customerToDisplay;
             customerFlight.Flights = flights;
