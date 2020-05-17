@@ -293,25 +293,20 @@ namespace Flight_Tracker.Controllers
                 await _context.SaveChangesAsync();
                 transitMins = customer.duration + customer.TSAWaitTimeOnArrival;
                 ViewBag.TransitTime = transitMins;
-                DateTime leaveTime = ConvertTime(transitMins, customer);
+                DateTime leaveTime = ConvertTime(transitMins, customer, flight);
                 string dateToDisplay = leaveTime.ToShortDateString();
                 string timeToDisplay = leaveTime.ToString("hh:mm:ss tt");
                 ViewBag.LeaveTime = $"{dateToDisplay} {timeToDisplay}";
             }
             return View(customerFlight);
         }
-        //public DateTime CalculateDate(Customer customer, DateTime leavetime)
-        //{
-        //    DateTime time = DateTime.Today.Add(customer.SelectedArrivalTime.Value);
-        //    DateTime leaveDate = leavetime
-
-        //}
-        public DateTime ConvertTime(double? mins, Customer customer)
+        public DateTime ConvertTime(double? mins, Customer customer, FlightInfo flight)
         {
             TimeSpan conTime = TimeSpan.FromMinutes(mins.Value);
             TimeSpan arrivalTime = new TimeSpan(customer.SelectedArrivalTime.Value.Hours, customer.SelectedArrivalTime.Value.Minutes, customer.SelectedArrivalTime.Value.Seconds);
             TimeSpan transitTime = new TimeSpan(conTime.Hours, conTime.Minutes, conTime.Seconds).Duration();
-            DateTime time = DateTime.Today.Add(arrivalTime);
+            DateTime flightDate = flight.EstimatedDeparture.Value.Date;
+            DateTime time = flightDate.Add(arrivalTime);
             DateTime value = time.Subtract(transitTime);
             return value;
         }
