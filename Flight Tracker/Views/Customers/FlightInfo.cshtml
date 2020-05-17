@@ -69,6 +69,14 @@
             <div id="timeDisplay">@ViewBag.LeaveTime</div>
         </div>
     }
+    @if (ViewBag.TimeCheck == true)
+    {
+        <div style="color:red;">Your Selected Arrival Time is Not Within Range of TSA Timeslots</div>
+    }
+    else
+    {
+        <div style="color:red; display:none;">Your Selected Arrival Time is Not Within Range of TSA Timeslots</div>
+    }
     <button id="selectTime" class="btn btn-primary" onclick="showTimeInput()">Select New Arrival Time</button>
     <form asp-action="FlightInfo" method="post" id="time" style="display:none;">
         <div>
@@ -77,9 +85,9 @@
         </div>
     </form>
     <div class="container">
-        @if (Model.Customer.SelectedArrivalTime != null)
+        @if (Model.FlightInfo.SelectedArrivalTime != null)
         {
-            DateTime time = DateTime.Today.Add(Model.Customer.SelectedArrivalTime.Value);
+            DateTime time = DateTime.Today.Add(Model.FlightInfo.SelectedArrivalTime.Value);
             string displayTime = time.ToString("hh:mm tt");
             <div class="row">
                 <span><strong>Selected Terminal Arrival Time:</strong> @displayTime</span>

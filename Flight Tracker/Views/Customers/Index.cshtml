@@ -13,27 +13,30 @@
     </div>
     <br />
     <div>
-        <form asp-action="Index" method="get">
+        <button id="searchFlight" class="btn btn-secondary" onclick="showFlightInput()">Search New Flight</button>
+        <form id="searchFlightInput" asp-action="Index" method="get" style="display: none">
             <div class="form-actions no-color">
                 <h5>
-                    <label for="myFlightNumber">Enter Flight Number:</label>
-                    <input name="FlightNumber" id="myFlightNumber" value="Ex:DL737" onchange="myFunction()" />
+                    <input name="FlightNumber" id="myFlightNumber" placeholder="ex:DL737" onchange="myFunction()" />
                 </h5>
-                <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                <button type="submit" value="Submit" class="btn btn-primary">Search</button>
             </div>
         </form>
         <div>
             @if (ViewBag.Check != null && ViewBag.Check != "")
             {
-                <form asp-action="Index" method="get">
-                    <label for="Flights">Select Your Flight:</label>
+                <form asp-action="Index" method="get" style="margin-bottom: 10px; margin-top: 10px;">
+                    <label for="Flights"><strong>Select Your Flight: </strong></label>
                     <select name="SearchFlight" id="Flights" value="Flight Number" onchange="myFunction()">
                         @for (int i = 0; i < ViewBag.Flights.Length; i++)
                         {
-                            <option value="@i.ToString()">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@ViewBag.Flights[i].departure.scheduled</option>
+                            TimeSpan hours = new TimeSpan(5, 0, 0);
+                            DateTime dateTime = ViewBag.Flights[i].departure.scheduled.Add(hours);
+
+                            <option value="@i.ToString()">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@dateTime</option>
                         }
                     </select>
-                    <button type="submit" value="Submit" class="btn-primary">Submit</button>
+                    <button type="submit" value="Submit" class="btn btn-success">Add Flight</button>
                 </form>
             }
             else
@@ -80,41 +83,71 @@
             <tbody>
                 @foreach (var item in Model.Flights)
                 {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FlightNumber)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Airline)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EstimatedDeparture)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Airport)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EstimatedArrival)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ArrivalAirport)
-                    </td>
-                    <td>
-                        placeholder
-                    </td>
-                    <td class="whiteSpace" colspan="1" width:5px">
-                        <form asp-action="FlightInfo" method="get">
-                            <button type="submit" name="flightId" class="btn btn-warning" value="@item.Id"><i class="fas fa-search-plus" aria-hidden="true"></i></button>
-                        </form>
-                    </td>
-                </tr>
+                    if (item.Airport != null)
+                    {
+                        TimeSpan time = item.EstimatedArrival.Value.Subtract(item.EstimatedDeparture.Value);
+                        string formattedTime;
+                        if(time.Hours == 0)
+                        {
+                            formattedTime = $"{time.Minutes} minutes";
+                        }
+                        else if(time.Hours > 1)
+                        {
+                            formattedTime = $"{time.Hours} hours and {time.Minutes} minutes";
+                        }
+                        else
+                        {
+                            formattedTime = $"{time.Hours} hour and {time.Minutes} minutes";
+                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FlightNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Airline)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Gate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstimatedDeparture)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Airport)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstimatedArrival)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArrivalAirport)
+                            </td>
+                            <td>
+                                @formattedTime
+                            </td>
+                            <td class="whiteSpace" colspan="1" width:5px">
+                                <form asp-action="FlightInfo" method="get">
+                                    <button type="submit" name="flightId" class="btn btn-warning" value="@item.Id"><i class="fas fa-search-plus" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
                 }
             </tbody>
 
         </table>
     </div>
 </div>
+<script>
+     function showFlightInput() {
+        var x = document.getElementById("searchFlightInput")
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            x.style.marginTop = "10px"
+        }
+        else {
+            x.style.display = "none";
+        }
+    }
+</script>
 
