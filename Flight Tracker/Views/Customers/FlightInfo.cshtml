@@ -128,6 +128,13 @@
         <div class="row">
             <span><strong>Flight Time:</strong> @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Hours hours and @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Minutes minutes</span>
         </div>
+        @if (Model.FlightInfo.FlightStatus != null)
+        {
+            <div class="row">
+                <span><strong>Flight Status: </strong> @Model.FlightInfo.FlightStatus</span>
+            </div>
+        }
+
         @if (Model.FlightInfo.SelectedArrivalTime != null)
         {
             TimeSpan time = TimeSpan.FromMinutes(Model.Customer.duration.Value);
