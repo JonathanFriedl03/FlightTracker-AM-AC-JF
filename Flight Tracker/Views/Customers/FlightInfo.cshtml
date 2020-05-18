@@ -196,14 +196,14 @@
             var directionsService = new google.maps.DirectionsService;
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 13,
-                center: { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude}
+                center: {
+                    lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude
+
             });
             directionsRenderer.setMap(map);
-<<<<<<< HEAD
-            directionsRenderer.setPanel(document.getElementById('right-panel'));         
-=======
+
             directionsRenderer.setPanel(document.getElementById('right-panel'));
->>>>>>> 7f2f894ca4d472c8254ed9c036a5af3417af0874
+
 
             calculateAndDisplayRoute( directionsService, directionsRenderer);
         }
@@ -220,11 +220,7 @@
                         window.alert('Directions request failed due to ' + status);
                     }
             });
-<<<<<<< HEAD
         }        
-=======
-        }
->>>>>>> 7f2f894ca4d472c8254ed9c036a5af3417af0874
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
 </div>
