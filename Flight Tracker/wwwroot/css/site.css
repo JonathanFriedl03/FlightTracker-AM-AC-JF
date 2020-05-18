@@ -79,9 +79,10 @@ img.expand {
 
 .backgroundWhite {
     background-color: white;
-    padding: 55px;
+    padding: 40px;
     border-radius: 10px;
     margin-bottom: 30px;
+    width: 100%;
 }
 
 .backgroundWhiteBorder {

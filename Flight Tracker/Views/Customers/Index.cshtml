@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Home";
 }
+<style>
 
+</style>
 <br />
 <div class="border backgroundWhite">
     <div class="row">
         <div class="col-6">
-            <h2 class="text-info">Account Overview</h2>
+            <h2 class="text-info">My Flights</h2>
         </div>
     </div>
     <br />
@@ -41,7 +43,7 @@
                             TimeSpan hours = new TimeSpan(5, 0, 0);
                             DateTime dateTime = ViewBag.Flights[i].departure.scheduled.Add(hours);
 
-                            <option value="@i.ToString()">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@dateTime</option>
+                            <option value="@i.ToString()">Airport: @ViewBag.Flights[i].departure.airport Flight Time: @dateTime</option>
                         }
                     </select>
                     <button type="submit" value="Submit" class="btn btn-success">Add Flight</button>
@@ -53,12 +55,8 @@
             }
         </div>
     </div>
-
     <div>
-
         <table id="tblData" class="table table-striped border">
-            <tr class="table-secondary">
-
             <thead>
                 <tr>
                     <th>
@@ -86,8 +84,9 @@
                         Travel Time
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
-            </thead>
+            </thead>           
             <tbody>
                 @foreach (var item in Model.Flights)
                 {
@@ -134,7 +133,12 @@
                             </td>
                             <td class="whiteSpace" colspan="1" width:5px">
                                 <form asp-action="FlightInfo" method="get">
-                                    <button type="submit" name="flightId" class="btn btn-warning" value="@item.Id"><i class="fas fa-search-plus" aria-hidden="true"></i></button>
+                                    <button type="submit" title="Travel Info" name="flightId" class="btn btn-warning" value="@item.Id"><i class="fas fa-search-plus" aria-hidden="true"></i></button>
+                                </form>
+                            </td>
+                            <td>
+                                <form asp-action="DeleteFlight" method="get">
+                                    <button type="submit" title="Delete Flight" name="flightId" class="btn btn-danger" value="@item.Id"><i class="fas fa-trash-alt" aria-hidden="true"></i></button>
                                 </form>
                             </td>
                         </tr>

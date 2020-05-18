@@ -10,6 +10,7 @@
         padding-top: 20px;
         padding-bottom: 20px;
     }
+
     #timeDisplay {
         color: black;
         font-size: 56px;
@@ -27,6 +28,7 @@
         width: 33.33%;
         padding: 5px;
     }
+
     .row::after {
         content: "";
         clear: both;
@@ -37,12 +39,15 @@
         height: 400px;
         width: 700px;
     }
-    #time{
+
+    #time {
         margin-top: 10px;
     }
+
     #selectTime {
         margin-top: 10px;
     }
+
     #right-panel {
         padding: 15px;
         width: 37%;
@@ -55,7 +60,7 @@
 <div class="border backgroundWhite">
     <div class="row">
         <div class="col-6">
-            <h2>@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
+            <h2 class="text-info">@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
         </div>
     </div>
     <br />
@@ -65,7 +70,15 @@
     {
         <div>
             <center><h2>Time to Leave for @Html.DisplayFor(Model => Model.FlightInfo.Airport)</h2></center>
-            <div id="timeDisplay">@ViewBag.LeaveTime</div>
+            @if (DateTime.Now > ViewBag.LeaveTimeData)
+            {
+                <div style="color: red;" id="timeDisplay">@ViewBag.LeaveTime</div>
+            }
+            else
+            {
+                <div style="color: green;" id="timeDisplay">@ViewBag.LeaveTime</div>
+            }
+
         </div>
     }
     else
@@ -102,7 +115,7 @@
         else
         {
             <div class="row" style="display:none;">
-                <span><strong>Selected Terminal Arrival Time:</strong>uhhhhh</span>
+                <span><strong>Selected Terminal Arrival Time:</strong></span>
             </div>
         }
 
@@ -113,13 +126,38 @@
             <span><strong>Arrival:</strong> @Html.DisplayFor(Model => Model.FlightInfo.ArrivalAirport) @Html.DisplayFor(Model => Model.FlightInfo.EstimatedArrival)</span>
         </div>
         <div class="row">
-            <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport): @Html.DisplayFor(Model => Model.Customer.duration) minutes</span>
+            <span><strong>Flight Time:</strong> @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Hours hours and @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Minutes minutes</span>
         </div>
+        @if (Model.FlightInfo.FlightStatus != null)
+        {
+            <div class="row">
+                <span><strong>Flight Status: </strong> @Model.FlightInfo.FlightStatus</span>
+            </div>
+        }
+
+        @if (Model.FlightInfo.SelectedArrivalTime != null)
+        {
+            TimeSpan time = TimeSpan.FromMinutes(Model.Customer.duration.Value);
+            double mins = time.Minutes;
+            <div class="row">
+                <span><strong>Estimated Transit Time to</strong> @Html.DisplayFor(Model => Model.FlightInfo.Airport): @time.Hours hours and @Math.Round(mins) minutes</span>
+            </div>
+        }
 
         @if (ViewBag.TransitTIme != null)
         {
+            var totalTime = ViewBag.TransitTime;
+            TimeSpan time = TimeSpan.FromMinutes(totalTime);
+            double mins = time.Minutes;
+
+            TimeSpan tsaTime = TimeSpan.FromMinutes(Model.FlightInfo.TSAWaitTimeOnArrival.Value);
+            double tsaMins = tsaTime.Minutes;
+
             <div class="row">
-                <span><strong>Estimated Total Time To Reach Terminal:</strong> @ViewBag.TransitTime minutes</span>
+                <span><strong>Estimated TSA Wait Time:</strong> @tsaTime.Hours hours and @Math.Round(tsaMins) minutes</span>
+            </div>
+            <div class="row">
+                <span><strong>Estimated Total Time To Reach Terminal:</strong> @time.Hours hours and @Math.Round(mins) minutes</span>
             </div>
         }
         else
@@ -165,7 +203,7 @@
         var t = setTimeout(function () { currentTime() }, 1000);
     }
     currentTime();
-   function showTimeInput() {
+    function showTimeInput() {
         var x = document.getElementById("time")
         var z = document.getElementById("selectTime")
         if (x.style.display === "none") {
@@ -182,15 +220,17 @@
         z.style.marginBottom = "10px";
     }
 </script>
-<h2>Map</h2>
-<br />
+@if (Model.FlightInfo.SelectedArrivalTime != null)
+{
+    <h2>Map</h2>
+    <br />
 
-<div class="row">
-    <div id="map" class="column"></div>
-    <div id="right-panel" class="column"></div>
-    &nbsp;
-    <div id="warnings-panel"></div>
-    <script>
+    <div class="row">
+        <div id="map" class="column"></div>
+        <div id="right-panel" class="column"></div>
+        &nbsp;
+        <div id="warnings-panel"></div>
+        <script>
         function initMap() {
             var directionsRenderer = new google.maps.DirectionsRenderer;
             var directionsService = new google.maps.DirectionsService;
@@ -203,7 +243,6 @@
             directionsRenderer.setMap(map);
 
             directionsRenderer.setPanel(document.getElementById('right-panel'));
-
 
             calculateAndDisplayRoute( directionsService, directionsRenderer);
         }
@@ -221,6 +260,13 @@
                     }
             });
         }        
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
-</div>
+
+        </script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
+    </div>
+}
+else
+{
+    <div></div>
+}
+

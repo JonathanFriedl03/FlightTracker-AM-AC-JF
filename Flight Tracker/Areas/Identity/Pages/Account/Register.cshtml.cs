@@ -67,7 +67,7 @@ namespace Flight_Tracker.Areas.Identity.Pages.Account
             [Required]
             public string Role { get; set; }
         }
-
+        
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;

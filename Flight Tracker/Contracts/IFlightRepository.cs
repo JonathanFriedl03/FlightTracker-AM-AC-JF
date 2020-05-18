@@ -11,7 +11,7 @@ namespace Flight_Tracker.Contracts
         FlightInfo GetFlight(int flightId);
         List<FlightInfo> GetFlights(int customerId);
         void CreateFlight(FlightInfo flight);
-        void DeleteCustomer(int flightId);
+        void DeleteFlight(int flightId);
         void EditFlight(FlightInfo flight);
     }
 }

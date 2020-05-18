@@ -26,15 +26,20 @@
                         @if (User.IsInRole("Customer"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link " asp-area="" asp-controller="Customers" asp-action="Index">Home</a>
+                                <a class="nav-link " asp-area="" asp-controller="Customers" asp-action="Index">My Flights</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link " asp-area="" asp-controller="Contacts" asp-action="Index">Contact List</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Customers" asp-action="Edit">Edit Profile</a>
+                            </li><li class="nav-item">
+                                <a class="nav-link " asp-area="" asp-controller="Customers" asp-action="Details">Profile Details</a>
+                            </li>
                         }
                         else
                         {
-                       
+
                         }
 
                     </ul>
