@@ -17,7 +17,6 @@ namespace Flight_Tracker.Services
         }
         public async Task<DataInfo> GetArrivalInfo(string flightNum)
         {
-
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync($"http://api.aviationstack.com/v1/flights?access_key={APIKeys.FlightApiKey}&flight_iata={flightNum}");
             if (response.IsSuccessStatusCode)

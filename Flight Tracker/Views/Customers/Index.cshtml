@@ -43,7 +43,7 @@
                             TimeSpan hours = new TimeSpan(5, 0, 0);
                             DateTime dateTime = ViewBag.Flights[i].departure.scheduled.Add(hours);
 
-                            <option value="@i.ToString()">Airport:@ViewBag.Flights[i].departure.airport Flight Time:@dateTime</option>
+                            <option value="@i.ToString()">Airport: @ViewBag.Flights[i].departure.airport Flight Time: @dateTime</option>
                         }
                     </select>
                     <button type="submit" value="Submit" class="btn btn-success">Add Flight</button>
