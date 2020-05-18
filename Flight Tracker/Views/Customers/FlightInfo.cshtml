@@ -232,6 +232,7 @@
                 center: { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude}
             });
             directionsRenderer.setMap(map);
+
             directionsRenderer.setPanel(document.getElementById('right-panel'));
 
             calculateAndDisplayRoute( directionsService, directionsRenderer);
@@ -249,7 +250,7 @@
                         window.alert('Directions request failed due to ' + status);
                     }
             });
-        }
+        }        
         </script>
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
     </div>
@@ -258,4 +259,3 @@ else
 {
     <div></div>
 }
-
