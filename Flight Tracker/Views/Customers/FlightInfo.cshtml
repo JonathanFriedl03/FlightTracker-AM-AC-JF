@@ -54,7 +54,6 @@
 <br />
 <div class="border backgroundWhite">
     <div class="row">
-        @*<div class="col-6"><h1>Hello @Model.C</h1></div>*@
         <div class="col-6">
             <h2>@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
         </div>
@@ -200,7 +199,11 @@
                 center: { lat:@Model.Customer.startLatitude, lng: @Model.Customer.startLongitude}
             });
             directionsRenderer.setMap(map);
+<<<<<<< HEAD
             directionsRenderer.setPanel(document.getElementById('right-panel'));         
+=======
+            directionsRenderer.setPanel(document.getElementById('right-panel'));
+>>>>>>> 7f2f894ca4d472c8254ed9c036a5af3417af0874
 
             calculateAndDisplayRoute( directionsService, directionsRenderer);
         }
@@ -217,7 +220,11 @@
                         window.alert('Directions request failed due to ' + status);
                     }
             });
+<<<<<<< HEAD
         }        
+=======
+        }
+>>>>>>> 7f2f894ca4d472c8254ed9c036a5af3417af0874
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=&callback=initMap&libraries=directions"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=@APIKeys.GoogleAPI&language=en&callback=initMap&libraries=directions"></script>
 </div>

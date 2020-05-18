@@ -26,7 +26,7 @@ namespace Flight_Tracker.Models
         public DateTime? ActualArrival { get; set; }
         public TimeSpan? SelectedArrivalTime { get; set; }
         public double? TSAWaitTimeOnArrival { get; set; }
-
+        public long EpochTime { get; set; }
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }

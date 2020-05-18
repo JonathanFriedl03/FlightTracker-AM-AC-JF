@@ -32,8 +32,7 @@ namespace Flight_Tracker.Models
         public IEnumerable<Contact> Contacts { get; set; }       
         public string UserName { get; internal set; }
         public string Email { get; internal set; }
-        public long EpochTime { get; set; }
-
+        
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
