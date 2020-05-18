@@ -18,7 +18,7 @@ namespace Flight_Tracker.Data
         public FlightInfo GetFlight(int flightId) =>
             FindByCondition(f => f.Id.Equals(flightId)).SingleOrDefault();
         public void CreateFlight(FlightInfo flight) => Create(flight);
-        public void DeleteCustomer(int flightId)
+        public void DeleteFlight(int flightId)
         {
             var flightToDelete = FindByCondition(c => c.Id.Equals(flightId)).SingleOrDefault();
             Delete(flightToDelete);

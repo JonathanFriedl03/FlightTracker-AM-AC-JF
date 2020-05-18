@@ -318,6 +318,7 @@ namespace Flight_Tracker.Controllers
                 transitMins = customer.duration + flight.TSAWaitTimeOnArrival;
                 ViewBag.TransitTime = transitMins;
                 DateTime leaveTime = ConvertTime(transitMins, flight);
+                ViewBag.LeaveTimeData = leaveTime;
                 string dateToDisplay = leaveTime.ToShortDateString();
                 string timeToDisplay = leaveTime.ToString("hh:mm:ss tt");
                 ViewBag.LeaveTime = $"{dateToDisplay} {timeToDisplay}";
@@ -340,6 +341,12 @@ namespace Flight_Tracker.Controllers
             DateTime time = flightDate.Add(arrivalTime);
             DateTime value = time.Subtract(conTime);
             return value;
+        }
+        public IActionResult DeleteFlight(int flightId)
+        {
+            _repo.Flight.DeleteFlight(flightId);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
     
