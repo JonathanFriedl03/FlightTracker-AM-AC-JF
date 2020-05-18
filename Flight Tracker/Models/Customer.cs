@@ -13,7 +13,9 @@ namespace Flight_Tracker.Models
         [Key]
         public int Id { get; set; }
         public int flightId { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }                
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
@@ -27,7 +29,6 @@ namespace Flight_Tracker.Models
         public double? endLongitude { get; set; }
         public int? distance { get; set; }
         public int? duration { get; set; }
-        [Display(Name = "Airport Name")]
 
         public IEnumerable<Contact> Contacts { get; set; }       
         public string UserName { get; internal set; }

@@ -117,18 +117,15 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customerToDisplay = _repo.Customer.GetCustomer(userId);
+            if (customerToDisplay == null)
             {
                 return NotFound();
             }
-            var customer = _repo.Customer.GetCustomer(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            return View(customer);
+            return View(customerToDisplay);
         }
 
         // GET: Customers/Create
@@ -174,20 +171,16 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customerToDisplay = _repo.Customer.GetCustomer(userId);
+            if (customerToDisplay == null)
             {
                 return NotFound();
             }
-
-            var customer = _repo.Customer.GetCustomer(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            return View(customer);
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customerToDisplay.IdentityUserId);
+            return View(customerToDisplay);
         }
 
         // POST: Customers/Edit/5
@@ -195,20 +188,23 @@ namespace Flight_Tracker.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,FlightNumber,StreetAddress,City,State,ZipCode,Latitude,Longitude,Airport,FlightStatus,Gate,Delay,EstimatedDeparture,ActualDeparture,EstimatedArrival,ActualArrival,UserName,Email,IdentityUserId")] Customer customer)
+        public async Task<IActionResult> Edit(Customer customer)
         {
-            if (id != customer.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    customer.IdentityUserId = userId;
-                    _repo.Customer.EditCustomer(customer);
+                    var customerToEdit = _repo.Customer.GetCustomer(userId);
+                    customerToEdit.FirstName = customer.FirstName;
+                    customerToEdit.LastName = customer.LastName;
+                    customerToEdit.StreetAddress = customer.StreetAddress;
+                    customerToEdit.City = customer.City;
+                    customerToEdit.State = customer.State;
+                    customerToEdit.ZipCode = customer.ZipCode;
+                    customerToEdit.IdentityUserId = userId;
+                    _repo.Customer.EditCustomer(customerToEdit);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -229,20 +225,16 @@ namespace Flight_Tracker.Controllers
         }
 
         // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete()
         {
-            if (id == null)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customerToDisplay = _repo.Customer.GetCustomer(userId);
+            if (customerToDisplay== null)
             {
                 return NotFound();
             }
 
-            var customer = _repo.Customer.GetCustomer(id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-            return View(customer);
+            return View(customerToDisplay);
         }
 
         // POST: Customers/Delete/5

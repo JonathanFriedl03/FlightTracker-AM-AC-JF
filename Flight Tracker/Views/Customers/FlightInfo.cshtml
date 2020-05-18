@@ -60,7 +60,7 @@
 <div class="border backgroundWhite">
     <div class="row">
         <div class="col-6">
-            <h2>@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
+            <h2 class="text-info">@Html.DisplayFor(Model => Model.FlightInfo.Airline) Flight: @Html.DisplayFor(Model => Model.FlightInfo.FlightNumber)</h2>
         </div>
     </div>
     <br />
@@ -70,7 +70,15 @@
     {
         <div>
             <center><h2>Time to Leave for @Html.DisplayFor(Model => Model.FlightInfo.Airport)</h2></center>
-            <div id="timeDisplay">@ViewBag.LeaveTime</div>
+            @if (DateTime.Now > ViewBag.LeaveTimeData)
+            {
+                <div style="color: red;" id="timeDisplay">@ViewBag.LeaveTime</div>
+            }
+            else
+            {
+                <div style="color: green;" id="timeDisplay">@ViewBag.LeaveTime</div>
+            }
+
         </div>
     }
     else
@@ -107,7 +115,7 @@
         else
         {
             <div class="row" style="display:none;">
-                <span><strong>Selected Terminal Arrival Time:</strong>uhhhhh</span>
+                <span><strong>Selected Terminal Arrival Time:</strong></span>
             </div>
         }
 
@@ -116,6 +124,9 @@
         </div>
         <div class="row">
             <span><strong>Arrival:</strong> @Html.DisplayFor(Model => Model.FlightInfo.ArrivalAirport) @Html.DisplayFor(Model => Model.FlightInfo.EstimatedArrival)</span>
+        </div>
+        <div class="row">
+            <span><strong>Flight Time:</strong> @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Hours hours and @Model.FlightInfo.EstimatedArrival.Value.Subtract(Model.FlightInfo.EstimatedDeparture.Value).Minutes minutes</span>
         </div>
         @if (Model.FlightInfo.SelectedArrivalTime != null)
         {
@@ -200,17 +211,6 @@
     window.onload = function () {
         var z = document.getElementById("selectTime")
         z.style.marginBottom = "10px";
-    }
-    function blink() {
-        var x = document.getElementById("clock");
-        if (@DateTime.Now > @ViewBag.LeaveTimeData && x.style.display === "none") {
-            x.style.display = "block"
-            x.style.color = "red"
-        }
-        else {
-            x.style.display = "none";
-        }
-        var t = setTimeout(function () { blink() }, 500);
     }
 </script>
 @if (Model.FlightInfo.SelectedArrivalTime != null)
