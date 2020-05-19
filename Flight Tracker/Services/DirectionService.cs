@@ -23,7 +23,7 @@ namespace Flight_Tracker.Services
 
         public async Task<TravelInfo> GetDirections(Customer customer, FlightInfo flight)
         {
-            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&{customer.ZipCode}&destination={flight.Airport}&traffic_model=best_guess&departure_time={flight.EpochTime}&key={APIKeys.GoogleAPI}";
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={customer.StreetAddress}&={customer.ZipCode}&destination={flight.Airport}&traffic_model=best_guess&departure_time=now&key={APIKeys.GoogleAPI}";
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(url);
             TravelInfo travelInfo = null;
